@@ -42,7 +42,11 @@ def delete_user(token: str, password: str) -> str:
         user.delete()
 
     else:
-        raise HTTPException(status_code=401, detail=f'The password is incorrect')
+        raise HTTPException(status_code=401, detail=f'Wrong password')
+
+@db_session
+def get_user_by_token(token: str) -> User:
+    return User.get(token=token)
 
 @db_session
 def valid_token(token: str) -> bool:

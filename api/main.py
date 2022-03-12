@@ -24,7 +24,6 @@ async def create_user(user: UserCreate):
     new_user_token = db.create_user(**user.dict())
 
     return {
-        'status': 'success',
         'detail': f'User {user.name} created successfully',
         'token': new_user_token
     }
@@ -36,6 +35,16 @@ async def delete_user(user: UserDelete, token: str = Header(..., alias='API_TOKE
     db.delete_user(token, user.password)
 
     return {
-        'status': 'success',
         'detail': f'User deleted successfully',
+    }
+
+@app.get('/me')
+async def me(token: str = Header(..., alias='API_TOKEN')):
+    check_token(token)
+
+    user = db.get_user_by_token(token)
+
+    return {
+        'name': user.name,
+        'token': user.token
     }
