@@ -12,7 +12,7 @@ db.bind(provider='sqlite', filename='database.db', create_db=True)
 class User(db.Entity):
     _table_ = 'users'
 
-    name = Required(str, unique=True, max_len=30)
+    username = Required(str, unique=True, max_len=30)
     hashed_password = Required(str)
     token = Required(str, unique=True)
 
@@ -21,12 +21,12 @@ db.generate_mapping(create_tables=True)
 # Functions to communicate with the database
 
 @db_session
-def create_user(name: str, password: str) -> str:
+def create_user(username: str, password: str) -> str:
     hashed_password = hashing.hash_password(password)
     token = hashing.generate_token()
 
     try:
-        User(name=name, hashed_password=hashed_password, token=token)
+        User(username=username, hashed_password=hashed_password, token=token)
         commit()
 
         return token
@@ -45,8 +45,8 @@ def delete_user(token: str, password: str) -> str:
         raise HTTPException(status_code=401, detail=f'Wrong password')
 
 @db_session
-def get_user_token(name: str, password: str) -> str:
-    user = User.get(name=name)
+def get_user_token(username: str, password: str) -> str:
+    user = User.get(username=username)
 
     if not user:
         raise HTTPException(status_code=404, detail=f'User not found')

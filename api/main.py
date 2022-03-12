@@ -35,7 +35,7 @@ async def create_user(user: UserCreate):
     new_user_token = db.create_user(**user.dict())
 
     return {
-        'detail': f'User {user.name} created successfully',
+        'detail': f'User {user.username} created successfully',
         'token': new_user_token
     }
 
