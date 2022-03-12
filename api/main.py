@@ -20,5 +20,5 @@ async def create_user(user: UserCreate):
 
     return {
         'status': 'success',
-        'message': f'User {user.name} created successfully'
+        'detail': f'User {user.name} created successfully'
     }

@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from pony.orm import *
 
 from .hashing import hash_password, generate_token
@@ -24,4 +25,9 @@ def create_user(name, password):
     hashed_password = hash_password(password)
     token = generate_token()
 
-    User(name=name, hashed_password=hashed_password, token=token)
+    try:
+        User(name=name, hashed_password=hashed_password, token=token)
+        commit()
+
+    except TransactionIntegrityError:
+        raise HTTPException(status_code=400, detail=f'The user {name} alredy exists')
