@@ -49,13 +49,10 @@ async def delete_user(user: UserDelete, token: str = Header(..., alias='API_TOKE
         'detail': f'User deleted successfully',
     }
 
-@app.get('/me', tags=['Users'])
-async def me(token: str = Header(..., alias='API_TOKEN')):
-    check_token(token)
-
-    user = db.get_user_by_token(token)
+@app.post('/get-my-token', tags=['Users'])
+async def get_my_token(user: UserCreate):
+    token = db.get_user_token(**user.dict())
 
     return {
-        'name': user.name,
-        'token': user.token
+        'token': token
     }

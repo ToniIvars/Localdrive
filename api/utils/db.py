@@ -32,7 +32,7 @@ def create_user(name: str, password: str) -> str:
         return token
 
     except TransactionIntegrityError:
-        raise HTTPException(status_code=400, detail=f'The user {name} alredy exists')
+        raise HTTPException(status_code=400, detail=f'User alredy exists')
 
 @db_session
 def delete_user(token: str, password: str) -> str:
@@ -45,8 +45,17 @@ def delete_user(token: str, password: str) -> str:
         raise HTTPException(status_code=401, detail=f'Wrong password')
 
 @db_session
-def get_user_by_token(token: str) -> User:
-    return User.get(token=token)
+def get_user_token(name: str, password: str) -> str:
+    user = User.get(name=name)
+
+    if not user:
+        raise HTTPException(status_code=404, detail=f'User not found')
+
+    if hashing.check_password(user, password):
+        return user.token
+
+    else:
+        raise HTTPException(status_code=401, detail=f'Wrong password')
 
 @db_session
 def valid_token(token: str) -> bool:
