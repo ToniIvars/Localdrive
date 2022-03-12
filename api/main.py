@@ -1,7 +1,11 @@
-from fastapi import FastAPI, Header, HTTPException
+import aiofiles
+
+from fastapi import FastAPI, Header, HTTPException, UploadFile
+from pathlib import Path
 
 from api.utils import db
 from .schemas import UserCreate, UserDelete
+from .config import settings
 
 description = '''
 This is a cloud service at home. You can:
@@ -16,9 +20,19 @@ app = FastAPI(
     version='1.0'
 )
 
+# Extra functions
+
 def check_token(token: str):
     if not db.valid_token(token):
         raise HTTPException(status_code=401, detail='Invalid token')
+
+def get_user_storage_path(token: str) -> Path:
+    out_file_dir = settings.store_path / token
+    
+    if not out_file_dir.exists():
+        out_file_dir.mkdir()
+
+    return out_file_dir
 
 # API endpoints
 
@@ -46,7 +60,7 @@ async def delete_user(user: UserDelete, token: str = Header(..., alias='API_TOKE
     db.delete_user(token, user.password)
 
     return {
-        'detail': f'User deleted successfully',
+        'detail': 'User deleted successfully',
     }
 
 @app.post('/get-my-token', tags=['Users'])
@@ -56,3 +70,15 @@ async def get_my_token(user: UserCreate):
     return {
         'token': token
     }
+
+@app.post('/upload-file', tags=['Files'])
+async def post_endpoint(post_file: UploadFile, token: str = Header(..., alias='API_TOKEN')):
+    check_token(token)
+
+    out_file_path = get_user_storage_path(token) / post_file.filename
+
+    async with aiofiles.open(out_file_path, 'wb') as out_file:
+        while content := await post_file.read(1024):  # async read chunk
+            await out_file.write(content)  # async write chunk
+
+    return {'detail': 'File uploaded successfully'}
