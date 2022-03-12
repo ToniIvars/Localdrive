@@ -7,6 +7,9 @@ def hash_password(password: str) -> str:
 
     return hashed
 
+def check_password(user, password: str) -> bool:
+    return check_password_hash(user.hashed_password, password)
+
 def generate_token() -> str:
     token = secrets.token_hex(24)
 

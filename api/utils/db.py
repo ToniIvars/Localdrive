@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from pony.orm import *
 
-from .hashing import hash_password, generate_token
+from . import hashing
 
 db = Database()
 
@@ -22,8 +22,8 @@ db.generate_mapping(create_tables=True)
 
 @db_session
 def create_user(name: str, password: str) -> str:
-    hashed_password = hash_password(password)
-    token = generate_token()
+    hashed_password = hashing.hash_password(password)
+    token = hashing.generate_token()
 
     try:
         User(name=name, hashed_password=hashed_password, token=token)
@@ -33,3 +33,17 @@ def create_user(name: str, password: str) -> str:
 
     except TransactionIntegrityError:
         raise HTTPException(status_code=400, detail=f'The user {name} alredy exists')
+
+@db_session
+def delete_user(token: str, password: str) -> str:
+    user = User.get(token=token)
+
+    if hashing.check_password(user, password):
+        user.delete()
+
+    else:
+        raise HTTPException(status_code=401, detail=f'The password is incorrect')
+
+@db_session
+def valid_token(token: str) -> bool:
+    return bool(User.get(token=token))
