@@ -16,9 +16,10 @@ async def version():
 
 @app.post('/create-user')
 async def create_user(user: UserCreate):
-    db.create_user(**user.dict())
+    new_user_token = db.create_user(**user.dict())
 
     return {
         'status': 'success',
-        'detail': f'User {user.name} created successfully'
+        'detail': f'User {user.name} created successfully',
+        'token': new_user_token
     }

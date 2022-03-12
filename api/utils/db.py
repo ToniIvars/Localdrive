@@ -21,13 +21,15 @@ db.generate_mapping(create_tables=True)
 # Functions to communicate with the database
 
 @db_session
-def create_user(name, password):
+def create_user(name: str, password: str) -> str:
     hashed_password = hash_password(password)
     token = generate_token()
 
     try:
         User(name=name, hashed_password=hashed_password, token=token)
         commit()
+
+        return token
 
     except TransactionIntegrityError:
         raise HTTPException(status_code=400, detail=f'The user {name} alredy exists')
