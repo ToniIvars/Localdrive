@@ -1,7 +1,4 @@
-import aiofiles
-
 from fastapi import FastAPI, Header, HTTPException, UploadFile
-from pathlib import Path
 
 from api.utils import db, file_handling
 from .schemas import UserCreate, UserDelete
@@ -68,8 +65,6 @@ async def upload_file(post_file: UploadFile, path: str = '', token: str = Header
 
     out_file_path = file_handling.get_user_storage_path(token, path) / post_file.filename
 
-    async with aiofiles.open(out_file_path, 'wb') as out_file:
-        while content := await post_file.read(1024):  # async read chunk
-            await out_file.write(content)  # async write chunk
+    await file_handling.save_file(post_file, out_file_path)
 
     return {'detail': 'File uploaded successfully'}
