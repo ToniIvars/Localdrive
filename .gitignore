@@ -5,3 +5,4 @@ __pycache__/
 *.sqlite3
 .env
 .pytest_cache/
+upload_test_file.txt
