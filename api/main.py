@@ -46,6 +46,7 @@ async def delete_user(user: UserDelete, token: str = Header(..., alias='API_TOKE
     check_token(token)
 
     db.delete_user(token, user.password)
+    file_handling.delete_user_directory(token)
 
     return {
         'detail': 'User deleted successfully',
@@ -63,7 +64,7 @@ async def get_my_token(user: UserCreate):
 async def upload_file(post_file: UploadFile, path: str = '', token: str = Header(..., alias='API_TOKEN')):
     check_token(token)
 
-    out_file_path = file_handling.get_user_storage_path(token, path) / post_file.filename
+    out_file_path = file_handling.get_storage_path(token, path) / post_file.filename
 
     await file_handling.save_file(post_file, out_file_path)
 
