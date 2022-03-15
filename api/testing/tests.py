@@ -52,16 +52,35 @@ def test_upload_file():
     assert response.status_code == 200
     assert response.json()['detail'] == "File uploaded successfully"
 
+    file_to_upload = {'post_file': open('api/testing/upload_test_file.txt' ,'rb')}
+
+    response = client.post('/upload-file', files=file_to_upload, headers=FILE_HEADERS)
+
+    assert response.status_code == 200
+    assert response.json()['detail'] == "File uploaded successfully"
+
 def test_list_files():
     response = client.get('/list-files', headers=FILE_HEADERS)
 
     assert response.status_code == 200
-    assert response.json()[0] == {"name": "test", "is_dir": True}
+    assert {"name": "test", "is_dir": True} in response.json()
 
     response = client.get('/list-files?path=test', headers=FILE_HEADERS)
 
     assert response.status_code == 200
-    assert response.json()[0] == {"name": "upload_test_file.txt", "is_dir": False, "mime_type": "text/plain"}
+    assert {"name": "upload_test_file.txt", "is_dir": False, "mime_type": "text/plain"} in response.json()
+
+def test_delete_file():
+    response = client.get('/delete-file/upload_test_file.txt', headers=FILE_HEADERS)
+
+    assert response.status_code == 200
+    assert response.json()['detail'] == "File deleted successfully"
+
+def test_delete_dir():
+    response = client.get('/delete-dir?path=test', headers=FILE_HEADERS)
+
+    assert response.status_code == 200
+    assert response.json()['detail'] == "Directory deleted successfully"
 
 def test_delete_user():
     post_data = {
