@@ -52,6 +52,17 @@ def test_upload_file():
     assert response.status_code == 200
     assert response.json()['detail'] == "File uploaded successfully"
 
+def test_list_files():
+    response = client.get('/list-files', headers=FILE_HEADERS)
+
+    assert response.status_code == 200
+    assert response.json()[0] == {"name": "test", "is_dir": True}
+
+    response = client.get('/list-files?path=test', headers=FILE_HEADERS)
+
+    assert response.status_code == 200
+    assert response.json()[0] == {"name": "upload_test_file.txt", "is_dir": False, "mime_type": "text/plain"}
+
 def test_delete_user():
     post_data = {
         "password": "fake_user_pass"
