@@ -69,3 +69,11 @@ async def upload_file(post_file: UploadFile, path: str = '', token: str = Header
     await file_handling.save_file(post_file, out_file_path)
 
     return {'detail': 'File uploaded successfully'}
+
+@app.get('/list-files', tags=['Files'])
+async def list_files(path: str = '', token: str = Header(..., alias='API_TOKEN')):
+    check_token(token)
+
+    dir_content = file_handling.list_files_from_dir(token, path)
+
+    return dir_content
