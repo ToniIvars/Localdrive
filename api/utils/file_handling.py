@@ -11,12 +11,13 @@ def mkdir_if_not_exists(path: Path) -> None:
     if not path.exists():
         path.mkdir(parents=True)
 
-def get_storage_path(token: str, path: str = '') -> Path:
+def get_storage_path(token: str, path: str = '', mkdir: bool = True) -> Path:
     path = path.strip('/').replace('../', '')
 
     out_file_dir = settings.store_path / token / path
 
-    mkdir_if_not_exists(out_file_dir)
+    if mkdir:
+        mkdir_if_not_exists(out_file_dir)
 
     return out_file_dir
 
