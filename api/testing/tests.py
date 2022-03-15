@@ -2,7 +2,7 @@ import requests
 
 from fastapi.testclient import TestClient
 
-from .main import app
+from api.main import app
 
 client = TestClient(app)
 
@@ -45,7 +45,7 @@ def test_get_user_token():
     FILE_HEADERS.update({'API_TOKEN': API_TOKEN})
 
 def test_upload_file():
-    file_to_upload = {'post_file': open('api/upload_test_file.txt' ,'rb')}
+    file_to_upload = {'post_file': open('api/testing/upload_test_file.txt' ,'rb')}
 
     response = client.post('/upload-file?path=test', files=file_to_upload, headers=FILE_HEADERS)
 
