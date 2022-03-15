@@ -77,3 +77,29 @@ async def list_files(path: str = '', token: str = Header(..., alias='API_TOKEN')
     dir_content = file_handling.list_files_from_dir(token, path)
 
     return dir_content
+
+@app.get('/delete-file/{file_name}', tags=['Files'])
+async def delete_file(file_name: str, path: str = '', token: str = Header(..., alias='API_TOKEN')):
+    check_token(token)
+
+    file_to_delete = file_handling.get_storage_path(token, path) / file_name
+
+    if not file_to_delete.exists() or file_to_delete.is_dir():
+        raise HTTPException(status_code=404, detail="File not found")
+
+    file_to_delete.unlink()
+
+    return {'detail': 'File deleted successfully'}
+
+@app.get('/delete-dir', tags=['Files'])
+async def delete_directory(path: str, token: str = Header(..., alias='API_TOKEN')):
+    check_token(token)
+
+    dir_to_delete = file_handling.get_storage_path(token, path, mkdir=False)
+
+    if not dir_to_delete.exists() or not dir_to_delete.is_dir():
+        raise HTTPException(status_code=404, detail="Directory not found")
+
+    file_handling.rmtree(dir_to_delete)
+
+    return {'detail': 'Directory deleted successfully'}
