@@ -41,6 +41,15 @@ async def create_user(user: UserCreate):
         'token': new_user_token
     }
 
+
+@app.post('/get-my-token', tags=['Users'])
+async def get_my_token(user: UserCreate):
+    token = db.get_user_token(**user.dict())
+
+    return {
+        'token': token
+    }
+
 @app.delete('/delete-user', tags=['Users'])
 async def delete_user(user: UserDelete, token: str = Header(..., alias='API_TOKEN')):
     check_token(token)
@@ -52,13 +61,14 @@ async def delete_user(user: UserDelete, token: str = Header(..., alias='API_TOKE
         'detail': 'User deleted successfully',
     }
 
-@app.post('/get-my-token', tags=['Users'])
-async def get_my_token(user: UserCreate):
-    token = db.get_user_token(**user.dict())
 
-    return {
-        'token': token
-    }
+@app.get('/list-files', tags=['Files'])
+async def list_files(path: str = '', token: str = Header(..., alias='API_TOKEN')):
+    check_token(token)
+
+    dir_content = file_handling.list_files_from_dir(token, path)
+
+    return dir_content
 
 @app.post('/upload-file', tags=['Files'])
 async def upload_file(post_file: UploadFile, path: str = '', token: str = Header(..., alias='API_TOKEN')):
@@ -69,14 +79,6 @@ async def upload_file(post_file: UploadFile, path: str = '', token: str = Header
     await file_handling.save_file(post_file, out_file_path)
 
     return {'detail': 'File uploaded successfully'}
-
-@app.get('/list-files', tags=['Files'])
-async def list_files(path: str = '', token: str = Header(..., alias='API_TOKEN')):
-    check_token(token)
-
-    dir_content = file_handling.list_files_from_dir(token, path)
-
-    return dir_content
 
 @app.put('/change-file-name', tags=['Files'])
 async def change_file_name(change_file: FileModify, token: str = Header(..., alias='API_TOKEN')):
