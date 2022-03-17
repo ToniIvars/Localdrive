@@ -32,7 +32,7 @@ async def info():
         'version': '1.0',
     }
 
-@app.post('/create-user', tags=['Users'])
+@app.post('/users/create', tags=['Users'])
 async def create_user(user: UserCreate):
     new_user_token = db.create_user(**user.dict())
 
@@ -42,7 +42,7 @@ async def create_user(user: UserCreate):
     }
 
 
-@app.post('/get-my-token', tags=['Users'])
+@app.post('/users/get-my-token', tags=['Users'])
 async def get_my_token(user: UserCreate):
     token = db.get_user_token(**user.dict())
 
@@ -50,7 +50,7 @@ async def get_my_token(user: UserCreate):
         'token': token
     }
 
-@app.delete('/delete-user', tags=['Users'])
+@app.delete('/users/delete', tags=['Users'])
 async def delete_user(user: UserDelete, token: str = Header(..., alias='API_TOKEN')):
     check_token(token)
 
@@ -62,7 +62,7 @@ async def delete_user(user: UserDelete, token: str = Header(..., alias='API_TOKE
     }
 
 
-@app.get('/list-files', tags=['Files'])
+@app.get('/files/list', tags=['Files'])
 async def list_files(path: str = '', token: str = Header(..., alias='API_TOKEN')):
     check_token(token)
 
@@ -70,7 +70,7 @@ async def list_files(path: str = '', token: str = Header(..., alias='API_TOKEN')
 
     return dir_content
 
-@app.post('/upload-file', tags=['Files'])
+@app.post('/files/upload', tags=['Files'])
 async def upload_file(post_file: UploadFile, path: str = '', token: str = Header(..., alias='API_TOKEN')):
     check_token(token)
 
@@ -80,7 +80,7 @@ async def upload_file(post_file: UploadFile, path: str = '', token: str = Header
 
     return {'detail': 'File uploaded successfully'}
 
-@app.put('/change-file-name', tags=['Files'])
+@app.put('/files/change-file-name', tags=['Files'])
 async def change_file_name(change_file: FileModify, token: str = Header(..., alias='API_TOKEN')):
     check_token(token)
 
@@ -99,7 +99,7 @@ async def change_file_name(change_file: FileModify, token: str = Header(..., ali
 
     return {'detail': 'File name changed successfully'}
 
-@app.put('/change-dir-name', tags=['Files'])
+@app.put('/files/change-dir-name', tags=['Files'])
 async def change_dir_name(change_dir: DirModify, token: str = Header(..., alias='API_TOKEN')):
     check_token(token)
 
@@ -117,7 +117,7 @@ async def change_dir_name(change_dir: DirModify, token: str = Header(..., alias=
 
     return {'detail': 'Directory name changed successfully'}
 
-@app.delete('/delete-file', tags=['Files'])
+@app.delete('/files/delete-file', tags=['Files'])
 async def delete_file(delete_file: FileModel, token: str = Header(..., alias='API_TOKEN')):
     check_token(token)
 
@@ -130,7 +130,7 @@ async def delete_file(delete_file: FileModel, token: str = Header(..., alias='AP
 
     return {'detail': 'File deleted successfully'}
 
-@app.delete('/delete-dir', tags=['Files'])
+@app.delete('/files/delete-dir', tags=['Files'])
 async def delete_directory(delete_dir: DirModel, token: str = Header(..., alias='API_TOKEN')):
     check_token(token)
 
