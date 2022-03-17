@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Header, HTTPException, UploadFile
+from fastapi.responses import FileResponse
 
 from api.utils import db, file_handling
 from .schemas import UserCreate, UserDelete, DirModel, FileModel, FileModify, DirModify
@@ -61,7 +62,6 @@ async def delete_user(user: UserDelete, token: str = Header(..., alias='API_TOKE
         'detail': 'User deleted successfully',
     }
 
-
 @app.get('/files/list', tags=['Files'])
 async def list_files(path: str = '', token: str = Header(..., alias='API_TOKEN')):
     check_token(token)
@@ -69,6 +69,17 @@ async def list_files(path: str = '', token: str = Header(..., alias='API_TOKEN')
     dir_content = file_handling.list_files_from_dir(token, path)
 
     return dir_content
+
+@app.get('/files/download-file/{filename}', tags=['Files'])
+async def download_file(filename: str, path: str = '', token: str = Header(..., alias='API_TOKEN')):
+    check_token(token)
+
+    file_path = file_handling.get_storage_path(token, path) / filename
+
+    if not file_handling.path_exists(file_path) or file_handling.path_is_dir(file_path):
+        raise HTTPException(status_code=404, detail="File not found")
+
+    return FileResponse(path=file_path, filename=filename)
 
 @app.post('/files/upload', tags=['Files'])
 async def upload_file(post_file: UploadFile, path: str = '', token: str = Header(..., alias='API_TOKEN')):

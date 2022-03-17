@@ -70,6 +70,12 @@ def test_list_files():
     assert response.status_code == 200
     assert {"name": "upload_test_file.txt", "is_dir": False, "mime_type": "text/plain"} in response.json()
 
+def test_download_file():
+    response = client.get('/files/download-file/upload_test_file.txt', headers=FILE_HEADERS)
+
+    assert response.status_code == 200
+    assert response.text == 'This has worked'
+
 def test_delete_file():
     post_data = {
         "file_name": "upload_test_file.txt"
