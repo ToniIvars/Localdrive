@@ -71,13 +71,21 @@ def test_list_files():
     assert {"name": "upload_test_file.txt", "is_dir": False, "mime_type": "text/plain"} in response.json()
 
 def test_delete_file():
-    response = client.get('/delete-file/upload_test_file.txt', headers=FILE_HEADERS)
+    post_data = {
+        "file_name": "upload_test_file.txt"
+    }
+
+    response = client.delete('/delete-file', json=post_data, headers=HEADERS)
 
     assert response.status_code == 200
     assert response.json()['detail'] == "File deleted successfully"
 
 def test_delete_dir():
-    response = client.get('/delete-dir?path=test', headers=FILE_HEADERS)
+    post_data = {
+        "path": "test",
+    }
+
+    response = client.delete('/delete-dir', json=post_data, headers=HEADERS)
 
     assert response.status_code == 200
     assert response.json()['detail'] == "Directory deleted successfully"
@@ -87,7 +95,7 @@ def test_delete_user():
         "password": "fake_user_pass"
     }
 
-    response = client.post('/delete-user', json=post_data, headers=HEADERS)
+    response = client.delete('/delete-user', json=post_data, headers=HEADERS)
 
     assert response.status_code == 200
     assert response.json()['detail'] == "User deleted successfully"
