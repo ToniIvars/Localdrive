@@ -79,7 +79,7 @@ async def download_file(filename: str, path: str = '', token: str = Header(..., 
     if not file_handling.path_exists(file_path) or file_handling.path_is_dir(file_path):
         raise HTTPException(status_code=404, detail="File not found")
 
-    return FileResponse(path=file_path, filename=filename)
+    return FileResponse(path=file_path)
 
 @app.get('/files/download-dir', tags=['Files'])
 async def download_dir(path: str, token: str = Header(..., alias='API_TOKEN')):
