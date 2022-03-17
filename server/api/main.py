@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Header, HTTPException, UploadFile
 
 from api.utils import db, file_handling
-from .schemas import UserCreate, UserDelete
+from .schemas import UserCreate, UserDelete, DirDelete, FileDelete
 
 description = '''
 This is a cloud service at home. You can:
@@ -41,7 +41,7 @@ async def create_user(user: UserCreate):
         'token': new_user_token
     }
 
-@app.post('/delete-user', tags=['Users'])
+@app.delete('/delete-user', tags=['Users'])
 async def delete_user(user: UserDelete, token: str = Header(..., alias='API_TOKEN')):
     check_token(token)
 
@@ -78,11 +78,11 @@ async def list_files(path: str = '', token: str = Header(..., alias='API_TOKEN')
 
     return dir_content
 
-@app.get('/delete-file/{file_name}', tags=['Files'])
-async def delete_file(file_name: str, path: str = '', token: str = Header(..., alias='API_TOKEN')):
+@app.delete('/delete-file', tags=['Files'])
+async def delete_file(delete_file: FileDelete, token: str = Header(..., alias='API_TOKEN')):
     check_token(token)
 
-    file_to_delete = file_handling.get_storage_path(token, path) / file_name
+    file_to_delete = file_handling.get_storage_path(token, delete_file.path) / delete_file.file_name
 
     if not file_to_delete.exists() or file_to_delete.is_dir():
         raise HTTPException(status_code=404, detail="File not found")
@@ -91,11 +91,11 @@ async def delete_file(file_name: str, path: str = '', token: str = Header(..., a
 
     return {'detail': 'File deleted successfully'}
 
-@app.get('/delete-dir', tags=['Files'])
-async def delete_directory(path: str, token: str = Header(..., alias='API_TOKEN')):
+@app.delete('/delete-dir', tags=['Files'])
+async def delete_directory(delete_dir: DirDelete, token: str = Header(..., alias='API_TOKEN')):
     check_token(token)
 
-    dir_to_delete = file_handling.get_storage_path(token, path, mkdir=False)
+    dir_to_delete = file_handling.get_storage_path(token, delete_dir.path, mkdir=False)
 
     if not dir_to_delete.exists() or not dir_to_delete.is_dir():
         raise HTTPException(status_code=404, detail="Directory not found")
