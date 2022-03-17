@@ -87,13 +87,13 @@ async def change_file_name(change_file: FileModify, token: str = Header(..., ali
     old_file_path = file_path / change_file.file_name
     new_file_path = file_path / change_file.new_name
 
-    if not old_file_path.exists() or old_file_path.is_dir():
+    if not file_handling.path_exists(old_file_path) or file_handling.path_is_dir(old_file_path):
         raise HTTPException(status_code=404, detail="File not found")
 
-    if new_file_path.exists():
+    if file_handling.path_exists(new_file_path):
         raise HTTPException(status_code=400, detail="File already exists")
 
-    old_file_path.rename(new_file_path)
+    file_handling.rename(old_file_path, new_file_path)
 
     return {'detail': 'File name changed successfully'}
 
@@ -105,13 +105,13 @@ async def change_dir_name(change_dir: DirModify, token: str = Header(..., alias=
 
     new_dir_path = file_handling.Path('/'.join(str(dir_path).split('/')[:-1] + [change_dir.new_name]))
 
-    if not dir_path.exists() or not dir_path.is_dir():
+    if not file_handling.path_exists(dir_path) or not file_handling.path_is_dir(dir_path):
         raise HTTPException(status_code=404, detail="Directory not found")
 
-    if new_dir_path.exists():
+    if file_handling.path_exists(new_dir_path):
         raise HTTPException(status_code=400, detail="Directory already exists")
 
-    dir_path.rename(new_dir_path)
+    file_handling.rename(dir_path, new_dir_path)
 
     return {'detail': 'Directory name changed successfully'}
 
@@ -121,10 +121,10 @@ async def delete_file(delete_file: FileModel, token: str = Header(..., alias='AP
 
     file_to_delete = file_handling.get_storage_path(token, delete_file.path) / delete_file.file_name
 
-    if not file_to_delete.exists() or file_to_delete.is_dir():
+    if not file_handling.path_exists(file_to_delete) or file_handling.path_is_dir(file_to_delete):
         raise HTTPException(status_code=404, detail="File not found")
 
-    file_to_delete.unlink()
+    file_handling.delete(file_to_delete)
 
     return {'detail': 'File deleted successfully'}
 
@@ -134,9 +134,9 @@ async def delete_directory(delete_dir: DirModel, token: str = Header(..., alias=
 
     dir_to_delete = file_handling.get_storage_path(token, delete_dir.path, mkdir=False)
 
-    if not dir_to_delete.exists() or not dir_to_delete.is_dir():
+    if not file_handling.path_exists(dir_to_delete) or not file_handling.path_is_dir(dir_to_delete):
         raise HTTPException(status_code=404, detail="Directory not found")
 
-    file_handling.rmtree(dir_to_delete)
+    file_handling.delete(dir_to_delete)
 
     return {'detail': 'Directory deleted successfully'}

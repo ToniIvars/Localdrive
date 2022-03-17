@@ -7,6 +7,12 @@ from shutil import rmtree
 from api.config import settings
 from api.main import UploadFile
 
+def path_exists(path: Path) -> bool:
+    return path.exists()
+
+def path_is_dir(path: Path) -> bool:
+    return path.is_dir()
+
 def mkdir_if_not_exists(path: Path) -> None:
     if not path.exists():
         path.mkdir(parents=True)
@@ -49,3 +55,13 @@ def list_files_from_dir(token: str, path: str) -> None:
         content.append(new_content)
 
     return content
+
+def rename(old_path: Path, new_path: Path) -> None:
+    old_path.rename(new_path)
+
+def delete(path: Path) -> None:
+    if path_is_dir(path):
+        rmtree(path)
+
+    else:
+        path.unlink()
