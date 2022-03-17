@@ -7,9 +7,9 @@ class UserCreate(BaseModel):
 class UserDelete(BaseModel):
     password: str
 
-class FileDelete(BaseModel):
+class FileModel(BaseModel):
     path: str = ''
     file_name: str
 
-class DirDelete(BaseModel):
+class DirModel(BaseModel):
     path: str
