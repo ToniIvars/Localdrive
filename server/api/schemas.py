@@ -13,3 +13,9 @@ class FileModel(BaseModel):
 
 class DirModel(BaseModel):
     path: str
+
+class FileModify(FileModel):
+    new_name: str
+
+class DirModify(DirModel):
+    new_name: str

@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Header, HTTPException, UploadFile
 
 from api.utils import db, file_handling
-from .schemas import UserCreate, UserDelete, DirDelete, FileDelete
+from .schemas import UserCreate, UserDelete, DirModel, FileModel, FileModify, DirModify
 
 description = '''
 This is a cloud service at home. You can:
@@ -78,8 +78,45 @@ async def list_files(path: str = '', token: str = Header(..., alias='API_TOKEN')
 
     return dir_content
 
+@app.put('/change-file-name', tags=['Files'])
+async def change_file_name(change_file: FileModify, token: str = Header(..., alias='API_TOKEN')):
+    check_token(token)
+
+    file_path = file_handling.get_storage_path(token, change_file.path)
+
+    old_file_path = file_path / change_file.file_name
+    new_file_path = file_path / change_file.new_name
+
+    if not old_file_path.exists() or old_file_path.is_dir():
+        raise HTTPException(status_code=404, detail="File not found")
+
+    if new_file_path.exists():
+        raise HTTPException(status_code=400, detail="File already exists")
+
+    old_file_path.rename(new_file_path)
+
+    return {'detail': 'File name changed successfully'}
+
+@app.put('/change-dir-name', tags=['Files'])
+async def change_dir_name(change_dir: DirModify, token: str = Header(..., alias='API_TOKEN')):
+    check_token(token)
+
+    dir_path = file_handling.get_storage_path(token, change_dir.path, mkdir=False)
+
+    new_dir_path = file_handling.Path('/'.join(str(dir_path).split('/')[:-1] + [change_dir.new_name]))
+
+    if not dir_path.exists() or not dir_path.is_dir():
+        raise HTTPException(status_code=404, detail="Directory not found")
+
+    if new_dir_path.exists():
+        raise HTTPException(status_code=400, detail="Directory already exists")
+
+    dir_path.rename(new_dir_path)
+
+    return {'detail': 'Directory name changed successfully'}
+
 @app.delete('/delete-file', tags=['Files'])
-async def delete_file(delete_file: FileDelete, token: str = Header(..., alias='API_TOKEN')):
+async def delete_file(delete_file: FileModel, token: str = Header(..., alias='API_TOKEN')):
     check_token(token)
 
     file_to_delete = file_handling.get_storage_path(token, delete_file.path) / delete_file.file_name
@@ -92,7 +129,7 @@ async def delete_file(delete_file: FileDelete, token: str = Header(..., alias='A
     return {'detail': 'File deleted successfully'}
 
 @app.delete('/delete-dir', tags=['Files'])
-async def delete_directory(delete_dir: DirDelete, token: str = Header(..., alias='API_TOKEN')):
+async def delete_directory(delete_dir: DirModel, token: str = Header(..., alias='API_TOKEN')):
     check_token(token)
 
     dir_to_delete = file_handling.get_storage_path(token, delete_dir.path, mkdir=False)
