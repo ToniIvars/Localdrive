@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Header, HTTPException, UploadFile
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 
 from api.utils import db, file_handling
 from .schemas import UserCreate, UserDelete, DirModel, FileModel, FileModify, DirModify
@@ -80,6 +80,21 @@ async def download_file(filename: str, path: str = '', token: str = Header(..., 
         raise HTTPException(status_code=404, detail="File not found")
 
     return FileResponse(path=file_path, filename=filename)
+
+@app.get('/files/download-dir', tags=['Files'])
+async def download_dir(path: str, token: str = Header(..., alias='API_TOKEN')):
+    check_token(token)
+
+    dir_path = file_handling.get_storage_path(token, path, mkdir=False)
+
+    if not file_handling.path_exists(dir_path) or not file_handling.path_is_dir(dir_path):
+        raise HTTPException(status_code=404, detail="Directory not found")
+
+    zip_file = file_handling.get_zipped_dir(dir_path)
+
+    return Response(zip_file, media_type="application/zip", headers={
+        'Content-Disposition': f'attachment; filename={dir_path.name}.zip'
+    })
 
 @app.post('/files/upload', tags=['Files'])
 async def upload_file(post_file: UploadFile, path: str = '', token: str = Header(..., alias='API_TOKEN')):

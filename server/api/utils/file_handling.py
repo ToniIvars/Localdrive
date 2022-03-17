@@ -1,8 +1,11 @@
 import aiofiles
 import mimetypes
+import os
 
+from io import BytesIO
 from pathlib import Path
 from shutil import rmtree
+from zipfile import ZipFile
 
 from api.config import settings
 from api.main import UploadFile
@@ -65,3 +68,14 @@ def delete(path: Path) -> None:
 
     else:
         path.unlink()
+
+def get_zipped_dir(path: Path) -> BytesIO:
+    zip_file = BytesIO()
+    str_path = str(path)
+
+    with ZipFile(zip_file, 'w') as buffer:
+        for root, dirs, files in os.walk(path):
+            for f in files:
+                buffer.write(os.path.join(root, f), arcname=f'{root.replace(str_path, path.name)}/{f}')
+
+    return zip_file.getvalue()
