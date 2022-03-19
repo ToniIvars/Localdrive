@@ -18,6 +18,9 @@ After that, you must export an environment variable called **STORE_PATH** and se
 
 - Exporting a variable from the command line (`set STORE_PATH="<store path>"` in _Windows CMD_ or `export STORE_PATH="<store path>"` in _Linux or Mac_).
 
+You must export an environment variable called **ALLOWED_ORIGINS** as well. You must set its value to a string with the http origins you wanto to allow to access the API separated by **;**. For example, you can export it as:
+`ALLOWED_ORIGINS="http://localhost;http://localhost:5000;http://<YOUR LOCAL IP ADDRESS>"`.
+
 ### Running the server
 To start using the API, you must be in the **server directory**.
 From here, you can run `uvicorn api.main:app --reload` and you will have the server running.

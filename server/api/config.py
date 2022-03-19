@@ -3,6 +3,7 @@ from pydantic import BaseSettings, validator
 
 class Settings(BaseSettings):
     store_path: Path = Path.home()
+    allowed_origins: str
 
     class Config:
         env_file = 'api/.env'

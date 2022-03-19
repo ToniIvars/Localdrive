@@ -4,6 +4,7 @@ from fastapi.responses import FileResponse, Response
 
 from api.utils import db, file_handling
 from .schemas import UserCreate, UserDelete, DirModel, FileModel, FileModify, DirModify
+from .config import settings
 
 description = '''
 This is a cloud service at home. You can:
@@ -18,14 +19,9 @@ app = FastAPI(
     version='1.0'
 )
 
-origins = [
-    "http://localhost",
-    "http://localhost:3000",
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=settings.allowed_origins.split(';'),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
