@@ -3,7 +3,7 @@ import { MdOutlineCloudUpload } from 'react-icons/md'
 const UploadButton = () => {
   return (
     <button className='btn btn-success'>
-        <MdOutlineCloudUpload id='upload-icon' width='2em' height='2em' />
+        <MdOutlineCloudUpload id='upload-icon' />
         <span>Upload</span>
     </button>
   )
