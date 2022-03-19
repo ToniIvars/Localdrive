@@ -1,0 +1,64 @@
+/* Poppins font */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,600;0,800;1,300;1,400;1,600;1,800');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background-color: #6C757D;
+    color: #E9ECEF;
+}
+
+#navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 1.5em;
+    background-color: #E9ECEF;
+    color: #2D527C;
+}
+
+#logo-container {
+    display: flex;
+    align-items: center;
+}
+
+#logo {
+    width: 64px;
+    margin-right: 1.5rem;
+}
+
+#upload-icon {
+    margin-right: 0.4rem;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    font-size: 1.25rem;
+    border: none;
+    border-radius: 10px;
+}
+
+.btn-success {
+    background-color: #198754;
+    color: #E9ECEF;
+}
+
+.btn-success:hover {
+    background-color: #479F76;
+    animation: pulse;
+    animation-delay: 500ms;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+.btn-success:active {
+    background-color: #0F5132;
+    animation: none;
+}
