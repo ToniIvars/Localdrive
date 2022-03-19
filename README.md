@@ -26,3 +26,10 @@ From here, you can run `uvicorn api.main:app --reload` and you will have the ser
 
 ### Testing
 To run the tests, go to the server directory and run the command `pytest api/testing/tests.py`.
+
+## Client
+The client is a **UI** made with **React JS**.
+
+### Running the server
+To start using the client, you must be in the **frontend directory**.
+From here, you can run `npm start`.
