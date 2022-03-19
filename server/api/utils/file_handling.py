@@ -52,7 +52,7 @@ def list_files_from_dir(token: str, path: str) -> None:
             'is_dir': is_dir,
         }
 
-        new_content['mime_type'] = mimetypes.guess_type(item)[0] if not is_dir else None
+        new_content['mime_type'] = mimetypes.guess_type(item)[0] if not is_dir else 'folder'
 
         content.append(new_content)
 
