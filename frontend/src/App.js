@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import fileDownload from 'js-file-download'
 import Api from './api/Api'
 import Header from './components/Header'
 import CardContainer from './components/CardContainer'
@@ -11,16 +12,24 @@ function App() {
   const [actualPath, setActualPath] = useState('')
 
   useEffect(() => {
-    api.list_dir(actualPath).then(json => setDirItems(json))
+    api.listDir(actualPath).then(json => setDirItems(json))
    
     return () => setDirItems([])
 
   }, [actualPath])
 
+  const downloadItem = (isDir, itemName) => {
+    if (isDir) {
+      api.downloadDir(actualPath + itemName).then(data => fileDownload(data, `${itemName}.zip`))
+    } else {
+      api.downloadFile(itemName, actualPath).then(data => fileDownload(data, itemName))
+    }
+  }
+
   return (
     <>
       <Header />
-      <CardContainer items={dirItems} actualPath={actualPath} setActualPath={setActualPath} />
+      <CardContainer items={dirItems} actualPath={actualPath} setActualPath={setActualPath} downloadItem={downloadItem} />
     </>
   );
 }

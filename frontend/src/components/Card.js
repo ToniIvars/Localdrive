@@ -1,7 +1,8 @@
 import { FaRegFolder, FaRegFileAlt, FaRegFileImage, FaRegFileAudio, FaRegFileVideo, FaRegFileCode, FaRegQuestionCircle } from 'react-icons/fa'
 import { BsArrow90DegUp } from 'react-icons/bs'
+import { FiDownload } from 'react-icons/fi'
 
-const Card = ({ item, setActualPath }) => {
+const Card = ({ item, setActualPath, downloadItem }) => {
   const {name, is_dir, mime_type} = item
 
   const getIconFromMimeType = mime => {
@@ -39,6 +40,8 @@ const Card = ({ item, setActualPath }) => {
         {getIconFromMimeType(mime_type)}
         <p className='card-title'>{name}</p>
       </div>
+
+      <FiDownload className='card-icon-small download-icon grow' onClick={() => downloadItem(is_dir, name)}/>
     </div>
   )
 }
@@ -59,7 +62,7 @@ const UpDirCard = ({ setActualPath, disabled }) => {
   return (
     <div className={`card ${disabled ? 'disabled-card' : 'dir-card'}`} onDoubleClick={chagePath} style={{marginBottom: '2rem'}} >
       <div>
-        <BsArrow90DegUp className='card-icon' />
+        <BsArrow90DegUp className='card-icon-small' />
         <p className='card-title'>Up a directory</p>
       </div>
     </div>

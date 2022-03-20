@@ -103,7 +103,7 @@ body {
 .dir-card:hover {
     background-color: #ffffff;
     animation: pulse;
-    animation-delay: 1s;
+    animation-delay: 2s;
     animation-duration: 2s;
     animation-iteration-count: infinite;
     user-select: none;
@@ -118,6 +118,23 @@ body {
     font-size: 2rem;
 }
 
+.card-icon-small {
+    font-size: 1.5rem;
+}
+
 .card-title {
     margin-left: 0.5rem;
+}
+
+.download-icon {
+    color: #198754;
+    user-select: none;
+}
+
+.grow { 
+    transition: all .2s ease-in-out; 
+}
+    
+.grow:hover { 
+    transform: scale(1.25); 
 }

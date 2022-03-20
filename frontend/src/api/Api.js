@@ -10,8 +10,18 @@ class Api {
     });
   }
 
-  async list_dir(path) {
+  async listDir(path) {
     const response = await this.client.get(`/files/list?path=${path}`)
+    return response.data
+  }
+
+  async downloadFile(filename, path) {
+    const response = await this.client.get(`/files/download-file/${filename}?path=${path}`, {responseType: 'blob'})
+    return response.data
+  }
+
+  async downloadDir(path) {
+    const response = await this.client.get(`/files/download-dir?path=${path}`, {responseType: 'blob'})
     return response.data
   }
 }
