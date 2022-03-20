@@ -2,18 +2,16 @@ import axios from 'axios'
 
 class Api {
   constructor(apiToken) {
-    this.apiToken = apiToken
-    this.APIUrl = process.env.REACT_APP_API_URL
+    this.client = axios.create({
+      baseURL: process.env.REACT_APP_API_URL,
+      headers: {
+        API_TOKEN: apiToken
+      }
+    });
   }
 
   async list_dir(path) {
-    const response = await axios.get(`${this.APIUrl}/files/list?path=${path}`, {
-      headers: {
-        Accept: 'application/json',
-        API_TOKEN: this.apiToken
-      }
-    })
-
+    const response = await this.client.get(`/files/list?path=${path}`)
     return response.data
   }
 }
