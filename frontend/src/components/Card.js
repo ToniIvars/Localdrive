@@ -1,8 +1,7 @@
 import { FaRegFolder, FaRegFileAlt, FaRegFileImage, FaRegFileAudio, FaRegFileVideo, FaRegFileCode, FaRegQuestionCircle } from 'react-icons/fa'
-import  { HiOutlineDotsVertical } from 'react-icons/hi'
+import { BsArrow90DegUp } from 'react-icons/bs'
 
-const Card = ({ item }) => {
-  // eslint-disable-next-line
+const Card = ({ item, setActualPath }) => {
   const {name, is_dir, mime_type} = item
 
   const getIconFromMimeType = mime => {
@@ -30,16 +29,41 @@ const Card = ({ item }) => {
     }
   }
 
+  const chagePath = () => {
+    setActualPath(prev => `${prev}${name}/`)
+  }
+ 
   return (
-    <div className='card'>
+    <div className={`card ${is_dir ? 'dir-card' : ''}`} onDoubleClick={is_dir ? chagePath : null} >
       <div>
         {getIconFromMimeType(mime_type)}
         <p className='card-title'>{name}</p>
       </div>
-
-      <HiOutlineDotsVertical className='card-icon' />
     </div>
   )
 }
 
-export default Card
+const UpDirCard = ({ setActualPath, disabled }) => {
+  const chagePath = () => {
+    setActualPath(prev => {
+      let newPath = prev.slice(0, -1).split('/').slice(0, -1).join('/')
+
+      if (newPath !== '') {
+        newPath += '/'
+      }
+
+      return newPath
+    })
+  }
+ 
+  return (
+    <div className={`card ${disabled ? 'disabled-card' : 'dir-card'}`} onDoubleClick={chagePath} style={{marginBottom: '2rem'}} >
+      <div>
+        <BsArrow90DegUp className='card-icon' />
+        <p className='card-title'>Up a directory</p>
+      </div>
+    </div>
+  )
+}
+
+export {Card, UpDirCard}

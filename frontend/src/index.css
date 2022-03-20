@@ -32,6 +32,11 @@ body {
     margin-right: 1.5rem;
 }
 
+#actual-path {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
 .btn-icon {
     font-size: 1.5rem;
     margin-right: 0.4rem;
@@ -81,6 +86,21 @@ body {
     background-color: #DEE2E6;
     color: #495057;
     border-radius: 10px;
+}
+
+.disabled-card {
+    background-color: #ADB5BD;
+    cursor: not-allowed;
+    user-select: none;
+}
+
+.dir-card:hover {
+    background-color: #ffffff;
+    animation: pulse;
+    animation-delay: 1s;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    user-select: none;
 }
 
 .card > div {

@@ -8,16 +8,19 @@ const api = new Api(apiToken)
 
 function App() {
   const [dirItems, setDirItems] =  useState([])
+  const [actualPath, setActualPath] = useState('')
 
   useEffect(() => {
-    api.list_dir().then(json => setDirItems(json))
+    api.list_dir(actualPath).then(json => setDirItems(json))
+   
+    return () => setDirItems([])
 
-  }, [])
+  }, [actualPath])
 
   return (
     <>
       <Header />
-      <CardContainer items={dirItems} />
+      <CardContainer items={dirItems} actualPath={actualPath} setActualPath={setActualPath} />
     </>
   );
 }
