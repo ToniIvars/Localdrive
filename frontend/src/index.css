@@ -27,6 +27,12 @@ body {
     align-items: center;
 }
 
+@media (max-width: 500px) {
+    #logo-container > h1 {
+        display: none;
+    }
+}
+
 #logo {
     width: 3.5em;
     margin-right: 1rem;
