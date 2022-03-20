@@ -32,7 +32,8 @@ body {
     margin-right: 1.5rem;
 }
 
-#upload-icon {
+.btn-icon {
+    font-size: 1.5rem;
     margin-right: 0.4rem;
 }
 
