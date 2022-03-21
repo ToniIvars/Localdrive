@@ -108,6 +108,19 @@ async def upload_file(post_file: UploadFile, path: str = '', token: str = Header
 
     return {'detail': 'File uploaded successfully'}
 
+@app.post('/files/mk-dir', tags=['Files'])
+async def make_directory(model: DeleteModel, token: str = Header(..., alias='API_TOKEN')):
+    check_token(token)
+
+    path = file_handling.get_storage_path(token, model.path, mkdir=False) / model.name
+
+    if file_handling.path_exists(path):
+        raise HTTPException(status_code=400, detail="Directory already exists")
+
+    file_handling.mkdir_if_not_exists(path)
+
+    return {'detail': 'Directory created successfully'}
+
 @app.put('/files/change-name', tags=['Files'])
 async def change_name(model: ModifyModel, token: str = Header(..., alias='API_TOKEN')):
     check_token(token)

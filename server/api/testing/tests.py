@@ -59,6 +59,17 @@ def test_upload_file():
     assert response.status_code == 200
     assert response.json()['detail'] == "File uploaded successfully"
 
+def test_mkdir():
+    post_data = {
+        "path": "hello",
+        "name": "hello"
+    }
+
+    response = client.post('/files/mk-dir', json=post_data, headers=HEADERS)
+
+    assert response.status_code == 200
+    assert response.json()['detail'] == "Directory created successfully"
+
 def test_list_files():
     response = client.get('/files/list', headers=FILE_HEADERS)
 
