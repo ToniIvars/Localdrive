@@ -80,25 +80,24 @@ def test_download_file():
 
     assert response.status_code == 200
 
-def test_delete_file():
+def test_delete():
     post_data = {
-        "file_name": "upload_test_file.txt"
+        "name": "upload_test_file.txt"
     }
 
-    response = client.delete('/files/delete-file', json=post_data, headers=HEADERS)
+    response = client.delete('/files/delete', json=post_data, headers=HEADERS)
 
     assert response.status_code == 200
-    assert response.json()['detail'] == "File deleted successfully"
+    assert response.json()['detail'] == "File or directory deleted successfully"
 
-def test_delete_dir():
     post_data = {
-        "path": "test",
+        "name": "test",
     }
 
-    response = client.delete('/files/delete-dir', json=post_data, headers=HEADERS)
+    response = client.delete('/files/delete', json=post_data, headers=HEADERS)
 
     assert response.status_code == 200
-    assert response.json()['detail'] == "Directory deleted successfully"
+    assert response.json()['detail'] == "File or directory deleted successfully"
 
 def test_delete_user():
     post_data = {

@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, Response
 
 from api.utils import db, file_handling
-from .schemas import UserCreate, UserDelete, DirModel, FileModel, FileModify, DirModify
+from .schemas import UserCreate, UserDelete, DeleteModel, ModifyModel
 from .config import settings
 
 description = '''
@@ -108,65 +108,33 @@ async def upload_file(post_file: UploadFile, path: str = '', token: str = Header
 
     return {'detail': 'File uploaded successfully'}
 
-@app.put('/files/change-file-name', tags=['Files'])
-async def change_file_name(change_file: FileModify, token: str = Header(..., alias='API_TOKEN')):
+@app.put('/files/change-name', tags=['Files'])
+async def change_name(model: ModifyModel, token: str = Header(..., alias='API_TOKEN')):
     check_token(token)
 
-    file_path = file_handling.get_storage_path(token, change_file.path)
+    old_path = file_handling.get_storage_path(token, model.path, mkdir=False) / model.name
 
-    old_file_path = file_path / change_file.file_name
-    new_file_path = file_path / change_file.new_name
+    new_path = file_handling.get_storage_path(token, model.path, mkdir=False) / model.new_name
 
-    if not file_handling.path_exists(old_file_path) or file_handling.path_is_dir(old_file_path):
-        raise HTTPException(status_code=404, detail="File not found")
+    if not file_handling.path_exists(old_path):
+        raise HTTPException(status_code=404, detail="File or directory not found")
 
-    if file_handling.path_exists(new_file_path):
-        raise HTTPException(status_code=400, detail="File already exists")
+    if file_handling.path_exists(new_path):
+        raise HTTPException(status_code=400, detail="File or directory already exists")
 
-    file_handling.rename(old_file_path, new_file_path)
+    file_handling.rename(old_path, new_path)
 
-    return {'detail': 'File name changed successfully'}
+    return {'detail': 'Name changed successfully'}
 
-@app.put('/files/change-dir-name', tags=['Files'])
-async def change_dir_name(change_dir: DirModify, token: str = Header(..., alias='API_TOKEN')):
+@app.delete('/files/delete', tags=['Files'])
+async def delete(model: DeleteModel, token: str = Header(..., alias='API_TOKEN')):
     check_token(token)
 
-    dir_path = file_handling.get_storage_path(token, change_dir.path, mkdir=False)
+    path_to_delete = file_handling.get_storage_path(token, model.path, mkdir=False) / model.name
 
-    new_dir_path = file_handling.Path('/'.join(str(dir_path).split('/')[:-1] + [change_dir.new_name]))
+    if not file_handling.path_exists(path_to_delete):
+        raise HTTPException(status_code=404, detail="File or directory not found")
 
-    if not file_handling.path_exists(dir_path) or not file_handling.path_is_dir(dir_path):
-        raise HTTPException(status_code=404, detail="Directory not found")
+    file_handling.delete(path_to_delete)
 
-    if file_handling.path_exists(new_dir_path):
-        raise HTTPException(status_code=400, detail="Directory already exists")
-
-    file_handling.rename(dir_path, new_dir_path)
-
-    return {'detail': 'Directory name changed successfully'}
-
-@app.delete('/files/delete-file', tags=['Files'])
-async def delete_file(delete_file: FileModel, token: str = Header(..., alias='API_TOKEN')):
-    check_token(token)
-
-    file_to_delete = file_handling.get_storage_path(token, delete_file.path) / delete_file.file_name
-
-    if not file_handling.path_exists(file_to_delete) or file_handling.path_is_dir(file_to_delete):
-        raise HTTPException(status_code=404, detail="File not found")
-
-    file_handling.delete(file_to_delete)
-
-    return {'detail': 'File deleted successfully'}
-
-@app.delete('/files/delete-dir', tags=['Files'])
-async def delete_directory(delete_dir: DirModel, token: str = Header(..., alias='API_TOKEN')):
-    check_token(token)
-
-    dir_to_delete = file_handling.get_storage_path(token, delete_dir.path, mkdir=False)
-
-    if not file_handling.path_exists(dir_to_delete) or not file_handling.path_is_dir(dir_to_delete):
-        raise HTTPException(status_code=404, detail="Directory not found")
-
-    file_handling.delete(dir_to_delete)
-
-    return {'detail': 'Directory deleted successfully'}
+    return {'detail': 'File or directory deleted successfully'}

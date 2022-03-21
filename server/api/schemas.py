@@ -7,15 +7,9 @@ class UserCreate(BaseModel):
 class UserDelete(BaseModel):
     password: str
 
-class FileModel(BaseModel):
+class DeleteModel(BaseModel):
     path: str = ''
-    file_name: str
+    name: str
 
-class DirModel(BaseModel):
-    path: str
-
-class FileModify(FileModel):
-    new_name: str
-
-class DirModify(DirModel):
+class ModifyModel(DeleteModel):
     new_name: str
