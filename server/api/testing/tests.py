@@ -63,7 +63,7 @@ def test_list_files():
     response = client.get('/files/list', headers=FILE_HEADERS)
 
     assert response.status_code == 200
-    assert {"name": "test", "is_dir": True} in response.json()
+    assert {"name": "test", "is_dir": True, "mime_type": "folder"} in response.json()
 
     response = client.get('/files/list?path=test', headers=FILE_HEADERS)
 
@@ -71,10 +71,14 @@ def test_list_files():
     assert {"name": "upload_test_file.txt", "is_dir": False, "mime_type": "text/plain"} in response.json()
 
 def test_download_file():
-    response = client.get('/files/download-file/upload_test_file.txt', headers=FILE_HEADERS)
+    response = client.get('/files/download/upload_test_file.txt', headers=FILE_HEADERS)
 
     assert response.status_code == 200
     assert response.text == 'This has worked'
+
+    response = client.get('/files/download/test', headers=FILE_HEADERS)
+
+    assert response.status_code == 200
 
 def test_delete_file():
     post_data = {

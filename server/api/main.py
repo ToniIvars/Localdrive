@@ -80,31 +80,23 @@ async def list_files(path: str = '', token: str = Header(..., alias='API_TOKEN')
 
     return dir_content
 
-@app.get('/files/download-file/{filename}', tags=['Files'])
-async def download_file(filename: str, path: str = '', token: str = Header(..., alias='API_TOKEN')):
+@app.get('/files/download/{name}', tags=['Files'])
+async def download(name:str, path: str = '', token: str = Header(..., alias='API_TOKEN')):
     check_token(token)
 
-    file_path = file_handling.get_storage_path(token, path) / filename
+    local_path = file_handling.get_storage_path(token, path, mkdir=False) / name
 
-    if not file_handling.path_exists(file_path) or file_handling.path_is_dir(file_path):
-        raise HTTPException(status_code=404, detail="File not found")
+    if not file_handling.path_exists(local_path):
+        raise HTTPException(status_code=404, detail="File or directory not found")
 
-    return FileResponse(path=file_path)
+    if file_handling.path_is_dir(local_path):
+        zip_file = file_handling.get_zipped_dir(local_path)
 
-@app.get('/files/download-dir', tags=['Files'])
-async def download_dir(path: str, token: str = Header(..., alias='API_TOKEN')):
-    check_token(token)
+        return Response(zip_file, media_type="application/zip", headers={
+            'Content-Disposition': f'attachment; filename={local_path.name}.zip'
+        })
 
-    dir_path = file_handling.get_storage_path(token, path, mkdir=False)
-
-    if not file_handling.path_exists(dir_path) or not file_handling.path_is_dir(dir_path):
-        raise HTTPException(status_code=404, detail="Directory not found")
-
-    zip_file = file_handling.get_zipped_dir(dir_path)
-
-    return Response(zip_file, media_type="application/zip", headers={
-        'Content-Disposition': f'attachment; filename={dir_path.name}.zip'
-    })
+    return FileResponse(path=local_path)
 
 @app.post('/files/upload', tags=['Files'])
 async def upload_file(post_file: UploadFile, path: str = '', token: str = Header(..., alias='API_TOKEN')):
