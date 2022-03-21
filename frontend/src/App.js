@@ -19,11 +19,7 @@ function App() {
   }, [actualPath])
 
   const downloadItem = (isDir, itemName) => {
-    if (isDir) {
-      api.downloadDir(actualPath + itemName).then(data => fileDownload(data, `${itemName}.zip`))
-    } else {
-      api.downloadFile(itemName, actualPath).then(data => fileDownload(data, itemName))
-    }
+    api.download(actualPath, itemName).then(data => fileDownload(data, `${itemName}${isDir ? '.zip' : ''}`))
   }
 
   return (
