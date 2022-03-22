@@ -19,6 +19,15 @@ class Api {
     const response = await this.client.get(`/files/download/${name}?path=${path}`, {responseType: 'blob'})
     return response.data
   }
+
+  async mkdir(path, name) {
+    return this.client.post('/files/mk-dir', {
+        path: path,
+        name: name
+      })
+      .then(response => response.data)
+      .catch(error => {throw error.response.data})
+  }
 }
 
 export default Api

@@ -13,6 +13,21 @@ body {
     color: #E9ECEF;
 }
 
+input[type="text"] {
+    font-size: 1.5rem;
+    width: 80%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+label {
+    display: block;
+    font-size: 1.5rem;
+    width: 80%;
+    text-align: left;
+    margin-bottom: 0.5rem;
+}
+
 #navbar {
     display: flex;
     justify-content: space-between;
@@ -27,10 +42,9 @@ body {
     align-items: center;
 }
 
-@media (max-width: 500px) {
-    #logo-container > h1 {
-        display: none;
-    }
+#header-btn-container {
+    display: flex;
+    align-items: center;
 }
 
 #logo {
@@ -43,7 +57,7 @@ body {
     margin-bottom: 1rem;
 }
 
-.btn-icon {
+.header-btn-icon {
     font-size: 1.5rem;
     margin-right: 0.4rem;
 }
@@ -73,6 +87,15 @@ body {
 .btn-success:active {
     background-color: #0F5132;
     animation: none;
+}
+
+.btn-danger {
+    background-color: #B02A37;
+    color: #E9ECEF;
+}
+
+.btn-danger:hover {
+    background-color: #DC3545;
 }
 
 #card-container {
@@ -137,4 +160,55 @@ body {
     
 .grow:hover { 
     transform: scale(1.25); 
+}
+
+@media (max-width: 500px) {
+    .hide-when-small {
+        display: none;
+    }
+
+    .header-btn-icon {
+        margin: 0;
+    }
+}
+
+@media (max-width: 660px) {
+    #logo-container > h1 {
+        display: none;
+    }
+}
+
+.form {
+    position: absolute;
+    top: 3rem;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: clamp(350px, 80vw, 800px);
+    background-color: rgba(52, 58, 64, 0.9);
+    border-radius: 10px;
+    text-align: center;
+    padding: 1rem 0;
+    z-index: 1;
+}
+
+.form-btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.form-control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.zoom-in {
+    animation-name: zoomIn;
+    animation-duration: 800ms;
+}
+
+.zoom-out {
+    animation-name: zoomOut;
+    animation-duration: 1s;
 }
