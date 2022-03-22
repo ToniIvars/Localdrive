@@ -183,7 +183,7 @@ label {
     top: 3rem;
     left: 50%;
     transform: translate(-50%, 0);
-    width: clamp(350px, 80vw, 800px);
+    width: clamp(350px, 90vw, 800px);
     background-color: rgba(52, 58, 64, 0.9);
     border-radius: 10px;
     text-align: center;
