@@ -31,7 +31,7 @@ const MkdirForm = ({ makeDirectory, setForm }) => {
       </div>
 
       <div className='form-btn-container'>
-        <button style={{marginRight: '1rem'}} className='btn btn-danger' onClick={cancel}>Cancel</button>
+        <div style={{marginRight: '1rem'}} className='btn btn-danger' onClick={cancel}>Cancel</div>
         <button type='submit' className='btn btn-success' onClick={onSubmit}>Create folder</button>
       </div>
     </form>
