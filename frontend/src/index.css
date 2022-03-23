@@ -205,9 +205,9 @@ label {
     animation-duration: 1s;
 }
 
-.back-in {
-    animation-name: backInDown;
-    animation-duration: 800ms;
+.fade-in {
+    animation-name: fadeIn;
+    animation-duration: 1500ms;
 }
 
 .back-out {

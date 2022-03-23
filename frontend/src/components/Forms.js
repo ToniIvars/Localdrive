@@ -12,7 +12,7 @@ const MkdirForm = ({ makeDirectory, setForm }) => {
     if (name === '') {
       setError('Name cannot be empty')
     } else {
-      setForm('')
+      cancel()
       setName('')
       setError('')
       makeDirectory(name)
@@ -54,10 +54,10 @@ const UploadFileForm = ({ uploadFile, setForm }) => {
     e.preventDefault()
 
     if (Object.keys(file).length !== 0) {
-      setError('File filed cannot be empty')
+      setError('File field cannot be empty')
 
     } else {
-      setForm('')
+      cancel()
       setFile({})
       setError('')
       uploadFile(file)

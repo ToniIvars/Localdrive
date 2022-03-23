@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { BsCheckLg, BsXLg } from 'react-icons/bs'
 
 const Notification = ({ message, status, setNotification }) => {
-  const [animation, setAnimation] = useState('')
+  const [animation, setAnimation] = useState('fade-in')
 
   const getIcon = () => {
     if (status === 'success') {
