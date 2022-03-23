@@ -60,10 +60,10 @@ const UpDirCard = ({ setActualPath, disabled }) => {
   }
  
   return (
-    <div className={`card ${disabled ? 'disabled-card' : 'dir-card'}`} onDoubleClick={chagePath} style={{marginBottom: '2rem'}} >
+    <div className={`card ${disabled ? 'disabled-card' : 'dir-card'}`} onDoubleClick={chagePath} style={{marginBottom: '2.5rem'}} >
       <div>
         <BsArrow90DegUp className='card-icon-small' />
-        <p className='card-title'>Up a directory</p>
+        <p className='card-title'>Go a directory up</p>
       </div>
     </div>
   )
