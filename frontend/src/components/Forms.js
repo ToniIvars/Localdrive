@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { BsCheckLg, BsXLg } from 'react-icons/bs'
 
 const MkdirForm = ({ makeDirectory, setForm }) => {
   const [name, setName] = useState('')
@@ -31,8 +32,14 @@ const MkdirForm = ({ makeDirectory, setForm }) => {
       </div>
 
       <div className='form-btn-container'>
-        <div style={{marginRight: '1rem'}} className='btn btn-danger' onClick={cancel}>Cancel</div>
-        <button type='submit' className='btn btn-success' onClick={onSubmit}>Create folder</button>
+        <div style={{marginRight: '1rem'}} className='btn btn-danger' onClick={cancel}>
+          <BsXLg className='btn-icon' />
+          Cancel
+        </div>
+        <button type='submit' className='btn btn-success' onClick={onSubmit}>
+          <BsCheckLg className='btn-icon' />
+          Create folder
+        </button>
       </div>
     </form>
   )
