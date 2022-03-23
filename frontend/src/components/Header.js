@@ -10,7 +10,7 @@ const Header = ({ setForm }) => {
       </div>
       <div id='header-btn-container'>
         <MkdirButton setForm={setForm} />
-        <UploadButton />
+        <UploadButton setForm={setForm} />
       </div>
     </header>
   )

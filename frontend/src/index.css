@@ -13,7 +13,7 @@ body {
     color: #E9ECEF;
 }
 
-input[type="text"] {
+input[type="text"], input[type="file"] {
     font-size: 1.5rem;
     width: 80%;
     padding-left: 0.5rem;

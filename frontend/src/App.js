@@ -3,7 +3,7 @@ import fileDownload from 'js-file-download'
 import Api from './api/Api'
 import Header from './components/Header'
 import CardContainer from './components/CardContainer'
-import { MkdirForm } from './components/Forms'
+import { MkdirForm, UploadFileForm } from './components/Forms'
 import Notification from './components/Notification'
 
 const apiToken = process.env.REACT_APP_USER_TOKEN
@@ -45,9 +45,23 @@ function App() {
       })
   }
 
+  const uploadFile = file => {
+    api.uploadFile(actualPath, file)
+    .then(data => {
+      console.log(data.detail)
+      setNotification({message: data.detail, status: 'success'})
+      listDir()
+    })
+    .catch(e => {
+      console.log(e.detail)
+      setNotification({message: e.detail, status: 'error'})
+    })
+  }
+
   return (
     <>
       {form === 'mkdir' && <MkdirForm makeDirectory={makeDirectory} setForm={setForm} />}
+      {form === 'upload' && <UploadFileForm uploadFile={uploadFile} setForm={setForm} />}
       <Header setForm={setForm} />
       {Object.keys(notification).length !== 0 && <Notification message={notification.message} status={notification.status} setNotification={setNotification} />}
       <CardContainer items={dirItems} actualPath={actualPath} setActualPath={setActualPath} downloadItem={downloadItem} />

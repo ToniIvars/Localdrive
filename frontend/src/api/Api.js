@@ -28,6 +28,20 @@ class Api {
       .then(response => response.data)
       .catch(error => {throw error.response.data})
   }
+
+  async uploadFile(path, file) {
+    const formData = new FormData();
+
+		formData.append('post_file', file);
+
+    return this.client.post(`/files/upload?path=${path}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+      .then(response => response.data)
+      .catch(error => {throw error.response.data})
+  }
 }
 
 export default Api
