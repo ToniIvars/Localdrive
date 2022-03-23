@@ -11,8 +11,9 @@ class Api {
   }
 
   async listDir(path) {
-    const response = await this.client.get(`/files/list?path=${path}`)
-    return response.data
+    return this.client.get(`/files/list?path=${path}`)
+    .then(response => response.data)
+    .catch(error => {throw error.message})
   }
 
   async download(path, name) {

@@ -16,7 +16,13 @@ function App() {
   const [notification, setNotification] = useState({})
 
   // List dir
-  const listDir = () => api.listDir(actualPath).then(json => setDirItems(json))
+  const listDir = () => {
+    api.listDir(actualPath)
+      .then(json => setDirItems(json))
+      .catch(error => {
+        setNotification({message: (error === 'Network Error') ? 'The API could not be reached' : error, status: 'error'})
+      })
+  }
 
   // Initial file listing
   useEffect(() => {
