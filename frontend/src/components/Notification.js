@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { BsCheckLg, BsXLg } from 'react-icons/bs'
 
 const Notification = ({ message, status, setNotification }) => {
-  const [animation, setAnimation] = useState('back-in')
+  const [animation, setAnimation] = useState('')
 
   const getIcon = () => {
     if (status === 'success') {

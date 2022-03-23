@@ -70,33 +70,24 @@ label {
     border: none;
     border-radius: 10px;
     user-select: none;
+    color: #E9ECEF;
+    
+    background-size: 0 12%, auto;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    transition: all .2s ease-out;
+}
+
+.btn:hover {
+    background-size: 100% 12%, auto; 
 }
 
 .btn-success {
-    background-color: #198754;
-    color: #E9ECEF;
-}
-
-.btn-success:hover {
-    background-color: #479F76;
-    animation: pulse;
-    animation-delay: 500ms;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-}
-
-.btn-success:active {
-    background-color: #0F5132;
-    animation: none;
+    background-image: linear-gradient(#75B798, #75B798), linear-gradient(#198754, #198754);
 }
 
 .btn-danger {
-    background-color: #B02A37;
-    color: #E9ECEF;
-}
-
-.btn-danger:hover {
-    background-color: #DC3545;
+    background-image: linear-gradient(#EA868F, #EA868F), linear-gradient(#DC3545, #DC3545);
 }
 
 #card-container {
