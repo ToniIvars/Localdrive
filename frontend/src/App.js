@@ -14,6 +14,7 @@ function App() {
   const [actualPath, setActualPath] = useState('')
   const [form, setForm] = useState('')
   const [notification, setNotification] = useState({})
+  const [mode, setMode] = useState('download')
 
   // List dir
   const listDir = () => {
@@ -37,6 +38,20 @@ function App() {
     api.download(actualPath, itemName).then(data => fileDownload(data, `${itemName}${isDir ? '.zip' : ''}`))
   }
 
+  // Delete file or folder
+  const deleteItem = itemName => {
+    api.delete(actualPath, itemName)
+    .then(data => {
+      console.log(data.detail)
+      setNotification({message: data.detail, status: 'success'})
+      listDir()
+    })
+    .catch(e => {
+      console.log(e.detail)
+      setNotification({message: e.detail, status: 'error'})
+    })
+  }
+
   // Make a directory
   const makeDirectory = dirName => {
     api.mkdir(actualPath, dirName)
@@ -51,6 +66,7 @@ function App() {
       })
   }
 
+  // Upload a new file
   const uploadFile = file => {
     api.uploadFile(actualPath, file)
     .then(data => {
@@ -70,7 +86,7 @@ function App() {
       {form === 'upload' && <UploadFileForm uploadFile={uploadFile} setForm={setForm} />}
       <Header setForm={setForm} />
       {Object.keys(notification).length !== 0 && <Notification message={notification.message} status={notification.status} setNotification={setNotification} />}
-      <CardContainer items={dirItems} actualPath={actualPath} setActualPath={setActualPath} downloadItem={downloadItem} />
+      <CardContainer items={dirItems} actualPath={actualPath} setActualPath={setActualPath} downloadItem={downloadItem} deleteItem={deleteItem} mode={mode} setMode={setMode} />
     </>
   );
 }

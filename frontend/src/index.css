@@ -28,6 +28,22 @@ label {
     margin-bottom: 0.5rem;
 }
 
+select {
+    padding-left: 0.5rem;
+    background-color: #DEE2E6;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+.download-option {
+    color: #198754;
+}
+
+.delete-option {
+    color: #DC3545;
+}
+
 #navbar {
     display: flex;
     justify-content: space-between;
@@ -55,6 +71,11 @@ label {
 #actual-path {
     font-size: 1.25rem;
     margin-bottom: 1rem;
+}
+
+#updir-mode-container {
+    margin-bottom: 2rem;
+    display: flex;
 }
 
 .btn-icon {
@@ -109,10 +130,15 @@ label {
     border-radius: 10px;
 }
 
-.disabled-card {
-    background-color: #ADB5BD;
-    cursor: not-allowed;
-    user-select: none;
+.dir-card {
+    width: 100%;
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    background-color: #DEE2E6;
+    color: #495057;
+    border-radius: 10px;
+    margin-right: 1rem;
 }
 
 .dir-card:hover {
@@ -122,6 +148,19 @@ label {
     animation-duration: 2s;
     animation-iteration-count: infinite;
     user-select: none;
+}
+
+.disabled-card {
+    background-color: #ADB5BD;
+    cursor: not-allowed;
+    user-select: none;
+}
+
+.disabled-card:hover {
+    background-color: #ADB5BD;
+    cursor: not-allowed;
+    user-select: none;
+    animation: none;
 }
 
 .card > div {
@@ -143,6 +182,11 @@ label {
 
 .download-icon {
     color: #198754;
+    user-select: none;
+}
+
+.delete-icon {
+    color: #DC3545;
     user-select: none;
 }
 

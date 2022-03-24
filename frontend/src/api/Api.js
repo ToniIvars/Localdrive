@@ -21,6 +21,17 @@ class Api {
     return response.data
   }
 
+  async delete(path, name) {
+    return this.client.delete('/files/delete', {
+      data: {
+        path: path,
+        name: name
+      }
+    })
+    .then(response => response.data)
+    .catch(error => {throw error.message})
+  }
+
   async mkdir(path, name) {
     return this.client.post('/files/mk-dir', {
         path: path,
