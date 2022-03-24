@@ -42,12 +42,10 @@ function App() {
   const deleteItem = itemName => {
     api.delete(actualPath, itemName)
     .then(data => {
-      console.log(data.detail)
       setNotification({message: data.detail, status: 'success'})
       listDir()
     })
     .catch(e => {
-      console.log(e.detail)
       setNotification({message: e.detail, status: 'error'})
     })
   }
@@ -56,12 +54,10 @@ function App() {
   const makeDirectory = dirName => {
     api.mkdir(actualPath, dirName)
       .then(data => {
-        console.log(data.detail)
         setNotification({message: data.detail, status: 'success'})
         listDir()
       })
       .catch(e => {
-        console.log(e.detail)
         setNotification({message: e.detail, status: 'error'})
       })
   }
@@ -70,12 +66,10 @@ function App() {
   const uploadFile = file => {
     api.uploadFile(actualPath, file)
     .then(data => {
-      console.log(data.detail)
       setNotification({message: data.detail, status: 'success'})
       listDir()
     })
     .catch(e => {
-      console.log(e.detail)
       setNotification({message: e.detail, status: 'error'})
     })
   }
