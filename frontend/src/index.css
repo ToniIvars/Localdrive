@@ -298,3 +298,24 @@ select {
     font-size: 1.2rem;
     margin-right: 0.4rem;
 }
+
+.edit-form {
+    margin-left: 0.5rem;
+    display: flex;
+    align-items: center;
+    width: 90%;
+}
+
+.edit-form > input {
+    font-size: 1.25rem;
+}
+
+.edit-form-error {
+    color: #DC3545;
+    margin-left: 0.75rem;
+    min-width: 200px;
+}
+
+.editing-card {
+    width: 100%;
+}

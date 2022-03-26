@@ -33,6 +33,9 @@ const Card = ({ item, setActualPath, downloadItem, editItem, deleteItem }) => {
   const {name, is_dir, mime_type} = item
 
   const [dropdown, setDropdown] = useState(false)
+  const [editing, setEditing] = useState(false)
+  const [newName, setNewName] = useState(name)
+  const [error, setError] = useState('')
 
   const chagePath = () => {
     setActualPath(prev => `${prev}${name}/`)
@@ -41,27 +44,58 @@ const Card = ({ item, setActualPath, downloadItem, editItem, deleteItem }) => {
   const toggleDropdown = () => {
     setDropdown(prev => !prev)
   }
- 
+
+  const onSubmit = (e) => {
+    e.preventDefault()
+
+    if (newName === '') {
+      setError('Name cannot be empty')
+    } else {
+      setEditing(false)
+      editItem(name, newName)
+    }
+  }
+
   return (
     <div className={`card ${is_dir ? 'dir-card' : ''}`} onDoubleClick={is_dir ? chagePath : null} >
-      <div>
+      <div className={editing ? 'editing-card' : undefined}>
         {getIconFromMimeType(mime_type)}
-        <p className='card-title'>{name}</p>
+        {editing ?
+          <form className='edit-form' onSubmit={onSubmit}>
+            <input type="text" placeholder='New name' value={newName} onChange={e => setNewName(e.target.value)}/>
+            <span className='edit-form-error'>{error}</span>
+          </form> :
+
+          <p className='card-title'>{name}</p>
+        }
       </div>
 
-      <div class='dropdown'>
+      <div className='dropdown'>
         <HiDotsVertical className='card-icon-small dropdown-btn' onClick={toggleDropdown} />
         {dropdown && 
           <div className='dropdown-content'>
-            <button className='download-btn'>
+            <button className='download-btn' onClick={() => {
+              downloadItem(is_dir, name)
+              setDropdown(false)
+            }}>
               <FiDownload className='dropdown-icon' />
               Download
             </button>
-            <button className='edit-btn'>
+
+            <button className='edit-btn' onClick={() => {
+              setEditing(prev => !prev)
+              setNewName(name)
+              setError('')
+              setDropdown(false)
+            }}>
               <FiEdit className='dropdown-icon' />
               Edit
             </button>
-            <button className='delete-btn'>
+
+            <button className='delete-btn' onClick={() => {
+              deleteItem(name)
+              setDropdown(false)
+            }}>
               <FiTrash className='dropdown-icon' />
               Delete
             </button>

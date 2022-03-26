@@ -28,7 +28,7 @@ class Api {
       new_name: newName
     })
     .then(response => response.data)
-    .catch(error => {throw error.message})
+    .catch(error => {throw error.response.data})
   }
 
   async delete(path, name) {
