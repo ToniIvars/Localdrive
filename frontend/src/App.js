@@ -14,7 +14,6 @@ function App() {
   const [actualPath, setActualPath] = useState('')
   const [form, setForm] = useState('')
   const [notification, setNotification] = useState({})
-  const [mode, setMode] = useState('download')
 
   // List dir
   const listDir = () => {
@@ -41,6 +40,18 @@ function App() {
   // Delete file or folder
   const deleteItem = itemName => {
     api.delete(actualPath, itemName)
+    .then(data => {
+      setNotification({message: data.detail, status: 'success'})
+      listDir()
+    })
+    .catch(e => {
+      setNotification({message: e.detail, status: 'error'})
+    })
+  }
+
+  // Edit file or folder
+  const editItem = (itemName, newItemName) => {
+    api.edit(actualPath, itemName, newItemName)
     .then(data => {
       setNotification({message: data.detail, status: 'success'})
       listDir()
@@ -78,9 +89,13 @@ function App() {
     <>
       {form === 'mkdir' && <MkdirForm makeDirectory={makeDirectory} setForm={setForm} />}
       {form === 'upload' && <UploadFileForm uploadFile={uploadFile} setForm={setForm} />}
+
       <Header setForm={setForm} />
+
       {Object.keys(notification).length !== 0 && <Notification message={notification.message} status={notification.status} setNotification={setNotification} />}
-      <CardContainer items={dirItems} actualPath={actualPath} setActualPath={setActualPath} downloadItem={downloadItem} deleteItem={deleteItem} mode={mode} setMode={setMode} />
+
+      <CardContainer items={dirItems} actualPath={actualPath} setActualPath={setActualPath}
+        downloadItem={downloadItem} deleteItem={deleteItem} editItem={editItem} />
     </>
   );
 }

@@ -71,11 +71,7 @@ select {
 #actual-path {
     font-size: 1.25rem;
     margin-bottom: 1rem;
-}
-
-#updir-mode-container {
-    margin-bottom: 2rem;
-    display: flex;
+    user-select: none;
 }
 
 .btn-icon {
@@ -120,7 +116,7 @@ select {
 }
 
 .card {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
     padding: 0.75rem;
     display: flex;
     align-items: center;
@@ -130,15 +126,8 @@ select {
     border-radius: 10px;
 }
 
-.dir-card {
-    width: 100%;
-    padding: 0.75rem;
-    display: flex;
-    align-items: center;
-    background-color: #DEE2E6;
-    color: #495057;
-    border-radius: 10px;
-    margin-right: 1rem;
+.up-dir-card {
+    margin-bottom: 2rem;
 }
 
 .dir-card:hover {
@@ -156,13 +145,6 @@ select {
     user-select: none;
 }
 
-.disabled-card:hover {
-    background-color: #ADB5BD;
-    cursor: not-allowed;
-    user-select: none;
-    animation: none;
-}
-
 .card > div {
     display: flex;
     align-items: center;
@@ -174,28 +156,11 @@ select {
 
 .card-icon-small {
     font-size: 1.5rem;
+    user-select: none;
 }
 
 .card-title {
     margin-left: 0.5rem;
-}
-
-.download-icon {
-    color: #198754;
-    user-select: none;
-}
-
-.delete-icon {
-    color: #DC3545;
-    user-select: none;
-}
-
-.grow { 
-    transition: all .2s ease-in-out; 
-}
-    
-.grow:hover { 
-    transform: scale(1.25); 
 }
 
 @media (max-width: 500px) {

@@ -1,6 +1,6 @@
 import { FaRegFolder, FaRegFileAlt, FaRegFileImage, FaRegFileAudio, FaRegFileVideo, FaRegFileCode, FaRegQuestionCircle } from 'react-icons/fa'
 import { BsArrow90DegUp } from 'react-icons/bs'
-import { FiDownload, FiTrash } from 'react-icons/fi'
+import { HiDotsVertical } from 'react-icons/hi'
 
 const getIconFromMimeType = mime => {
   switch (mime.split('/')[0]) {
@@ -27,7 +27,7 @@ const getIconFromMimeType = mime => {
   }
 }
 
-const Card = ({ item, setActualPath, downloadItem }) => {
+const Card = ({ item, setActualPath, downloadItem, editItem, deleteItem }) => {
   const {name, is_dir, mime_type} = item
 
   const chagePath = () => {
@@ -41,7 +41,7 @@ const Card = ({ item, setActualPath, downloadItem }) => {
         <p className='card-title'>{name}</p>
       </div>
 
-      <FiDownload className='card-icon-small download-icon grow' onClick={() => downloadItem(is_dir, name)}/>
+      <HiDotsVertical className='card-icon-small' />
     </div>
   )
 }
@@ -60,30 +60,13 @@ const UpDirCard = ({ setActualPath, disabled }) => {
   }
  
   return (
-    <div className={`dir-card ${disabled && 'disabled-card'}`} onDoubleClick={chagePath} >
-      <BsArrow90DegUp className='card-icon-small' />
-      <p className='card-title'>Go a directory up</p>
-    </div>
-  )
-}
-
-const DeleteCard = ({ item, setActualPath, deleteItem }) => {
-  const {name, is_dir, mime_type} = item
-
-  const chagePath = () => {
-    setActualPath(prev => `${prev}${name}/`)
-  }
- 
-  return (
-    <div className={`card ${is_dir ? 'dir-card' : ''}`} onDoubleClick={is_dir ? chagePath : null} >
+    <div className={`card up-dir-card ${disabled ? 'disabled-card' : 'dir-card'}`} onDoubleClick={chagePath} >
       <div>
-        {getIconFromMimeType(mime_type)}
-        <p className='card-title'>{name}</p>
+        <BsArrow90DegUp className='card-icon-small' />
+        <p className='card-title'>Go a directory up</p>
       </div>
-
-      <FiTrash className='card-icon-small delete-icon grow' onClick={() => deleteItem(name)}/>
     </div>
   )
 }
 
-export {Card, UpDirCard, DeleteCard}
+export {Card, UpDirCard}
