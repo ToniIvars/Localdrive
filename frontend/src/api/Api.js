@@ -21,6 +21,16 @@ class Api {
     return response.data
   }
 
+  async edit(path, name,newName) {
+    return this.client.put('/files/change-name', {
+      path: path,
+      name: name,
+      new_name: newName
+    })
+    .then(response => response.data)
+    .catch(error => {throw error.message})
+  }
+
   async delete(path, name) {
     return this.client.delete('/files/delete', {
       data: {
