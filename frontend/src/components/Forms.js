@@ -33,11 +33,11 @@ const MkdirForm = ({ makeDirectory, setForm }) => {
 
       <div className='form-btn-container'>
         <div style={{marginRight: '1rem'}} className='btn btn-danger' onClick={cancel}>
-          <BsXLg className='btn-icon' />
+          <BsXLg className='form-btn-icon' />
           Cancel
         </div>
         <button type='submit' className='btn btn-success' onClick={onSubmit}>
-          <BsCheckLg className='btn-icon' />
+          <BsCheckLg className='form-btn-icon' />
           Create folder
         </button>
       </div>
@@ -78,11 +78,11 @@ const UploadFileForm = ({ uploadFile, setForm }) => {
 
       <div className='form-btn-container'>
         <div style={{marginRight: '1rem'}} className='btn btn-danger' onClick={cancel}>
-          <BsXLg className='btn-icon' />
+          <BsXLg className='form-btn-icon' />
           Cancel
         </div>
         <button type='submit' className='btn btn-success' onClick={onSubmit}>
-          <BsCheckLg className='btn-icon' />
+          <BsCheckLg className='form-btn-icon' />
           Upload File
         </button>
       </div>

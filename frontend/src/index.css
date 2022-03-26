@@ -36,14 +36,6 @@ select {
     font-size: 1rem;
 }
 
-.download-option {
-    color: #198754;
-}
-
-.delete-option {
-    color: #DC3545;
-}
-
 #navbar {
     display: flex;
     justify-content: space-between;
@@ -76,6 +68,11 @@ select {
 
 .btn-icon {
     font-size: 1.5rem;
+    margin-right: 0.4rem;
+}
+
+.form-btn-icon {
+    font-size: 1rem;
     margin-right: 0.4rem;
 }
 
@@ -244,4 +241,60 @@ select {
 .notification-icon {
     margin-right: 0.4rem;
     font-size: 1rem;
+}
+
+.dropdown {
+    position: relative;
+    user-select: none;
+}
+
+.dropdown-content {
+    position: absolute;
+    right: 2rem;
+    top: 0.5rem;
+    min-width: 160px;
+    z-index: 1;
+    border: 1px solid #6C757D;
+}
+
+.dropdown-content button {
+    width: 100%;
+    background-color: #DEE2E6;
+    padding: 12px;
+    text-align: start;
+    display: flex;
+    align-items: center;
+    border: none;
+}
+
+.download-btn {
+    color: #198754;
+}
+
+.download-btn:hover {
+    background-color: #198754;
+    color: #E9ECEF;
+}
+
+.edit-btn {
+    color: #CC9A06;
+}
+
+.edit-btn:hover {
+    background-color: #FFC107;
+    color: #6C757D;
+}
+
+.delete-btn {
+    color: #DC3545;
+}
+
+.delete-btn:hover {
+    background-color: #DC3545;
+    color: #E9ECEF;
+}
+
+.dropdown-icon {
+    font-size: 1.2rem;
+    margin-right: 0.4rem;
 }

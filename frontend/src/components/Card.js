@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { FaRegFolder, FaRegFileAlt, FaRegFileImage, FaRegFileAudio, FaRegFileVideo, FaRegFileCode, FaRegQuestionCircle } from 'react-icons/fa'
 import { BsArrow90DegUp } from 'react-icons/bs'
 import { HiDotsVertical } from 'react-icons/hi'
+import { FiDownload, FiEdit, FiTrash } from 'react-icons/fi'
 
 const getIconFromMimeType = mime => {
   switch (mime.split('/')[0]) {
@@ -30,8 +32,14 @@ const getIconFromMimeType = mime => {
 const Card = ({ item, setActualPath, downloadItem, editItem, deleteItem }) => {
   const {name, is_dir, mime_type} = item
 
+  const [dropdown, setDropdown] = useState(false)
+
   const chagePath = () => {
     setActualPath(prev => `${prev}${name}/`)
+  }
+
+  const toggleDropdown = () => {
+    setDropdown(prev => !prev)
   }
  
   return (
@@ -41,7 +49,25 @@ const Card = ({ item, setActualPath, downloadItem, editItem, deleteItem }) => {
         <p className='card-title'>{name}</p>
       </div>
 
-      <HiDotsVertical className='card-icon-small' />
+      <div class='dropdown'>
+        <HiDotsVertical className='card-icon-small dropdown-btn' onClick={toggleDropdown} />
+        {dropdown && 
+          <div className='dropdown-content'>
+            <button className='download-btn'>
+              <FiDownload className='dropdown-icon' />
+              Download
+            </button>
+            <button className='edit-btn'>
+              <FiEdit className='dropdown-icon' />
+              Edit
+            </button>
+            <button className='delete-btn'>
+              <FiTrash className='dropdown-icon' />
+              Delete
+            </button>
+          </div>
+        }
+      </div> 
     </div>
   )
 }
