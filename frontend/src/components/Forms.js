@@ -28,7 +28,7 @@ const MkdirForm = ({ makeDirectory, setForm }) => {
     <form className={`form ${animation}`} onSubmit={onSubmit}>
       <div className='form-control'>
         <label>New folder name: <p style={{color: '#DC3545', marginTop: '0.25rem'}}>{error}</p></label>
-        <input type='text' autoFocus={true} placeholder='Name' onChange={(e) => setName(e.target.value)} value={name}/>
+        <input type='text' placeholder='Name' onChange={(e) => setName(e.target.value)} value={name}/>
       </div>
 
       <div className='form-btn-container'>
