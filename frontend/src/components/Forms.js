@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { BsCheckLg, BsXLg } from 'react-icons/bs'
+import { MdOutlineCloudUpload } from 'react-icons/md'
 
 const MkdirForm = ({ makeDirectory, setForm }) => {
   const [name, setName] = useState('')
@@ -49,11 +50,12 @@ const UploadFileForm = ({ uploadFile, setForm }) => {
   const [file, setFile] = useState({})
   const [error, setError] = useState('')
   const [animation, setAnimation] = useState('zoom-in')
+  const [fileName, setFileName] = useState('')
 
   const onSubmit = (e) => {
     e.preventDefault()
 
-    if (Object.keys(file).length !== 0) {
+    if (!fileName) {
       setError('File field cannot be empty')
 
     } else {
@@ -73,7 +75,24 @@ const UploadFileForm = ({ uploadFile, setForm }) => {
     <form className={`form ${animation}`} onSubmit={onSubmit}>
       <div className='form-control'>
         <label>File to upload: <p style={{color: '#DC3545', marginTop: '0.25rem'}}>{error}</p></label>
-        <input type='file' onChange={(e) => setFile(e.target.files[0])}/>
+
+        {!fileName ?
+          <label id='file-upload'>
+            <input type='file' onChange={(e) => {
+              setFileName(e.target.files[0].name)
+              setFile(e.target.files[0])
+            }}/>
+
+            <MdOutlineCloudUpload id='file-upload-icon' />
+
+            <p id='file-label'>Browse a file</p>
+          </label>
+
+        : <p id='filename'>
+            <MdOutlineCloudUpload />
+            {fileName}
+          </p>
+        }
       </div>
 
       <div className='form-btn-container'>

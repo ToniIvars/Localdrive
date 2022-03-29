@@ -13,11 +13,21 @@ body {
     color: #E9ECEF;
 }
 
-input[type="text"], input[type="file"] {
+input[type="text"] {
     font-size: 1.5rem;
     width: 80%;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border: none;
+    border-radius: 5px;
+}
+
+input[type="file"] {
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
 }
 
 label {
@@ -199,6 +209,54 @@ select {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+#file-upload {
+    background-color: #DEE2E6;
+    color: #495057;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0;
+    flex-direction: column;
+    transition: all 300ms ease-in-out;
+    border: 4px solid transparent;
+}
+
+#file-upload:hover {
+    color: #598ac2;
+    box-sizing: border-box;
+    border-color: #598ac2;
+}
+
+#file-label {
+    font-size: 1.25rem;
+    text-align: center;
+    margin-top: 0.25rem;
+    font-weight: 500;
+    user-select: none;
+}
+
+#file-upload-icon {
+    font-size: 5rem;
+}
+
+#filename {
+    width: 80%;
+    font-size: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background-color: #DEE2E6;
+    color: #495057;
+    border-radius: 8px;
+    padding: 1rem 0;
+}
+
+#filename svg {
+    margin-right: 0.75rem;
 }
 
 .zoom-in {
