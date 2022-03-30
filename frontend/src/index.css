@@ -13,7 +13,7 @@ body {
     color: #E9ECEF;
 }
 
-input[type="text"] {
+input[type="text"], input[type="password"] {
     font-size: 1.5rem;
     width: 80%;
     padding: 0.25rem 0.5rem;
@@ -286,6 +286,8 @@ select {
     padding: 0.75rem 0;
     font-size: 1.25rem;
     user-select: none;
+    width: 100%;
+    color: #E9ECEF;
 }
 
 .notification-success {
@@ -376,4 +378,56 @@ select {
 
 .editing-card {
     width: 100%;
+}
+
+/* Login and Register routes styling */
+.container-center {
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    padding-top: 10vh;
+}
+
+.form-center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #6C757D;
+    background-color: #DEE2E6;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    max-width: 95vw;
+    user-select: none;
+}
+
+#form-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #2D527C;
+    margin-bottom: 1.5rem;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form input {
+    margin-bottom: 1rem;
+    width: 95%;
+}
+
+.login-form a {
+    margin-top: 1.25rem;
+    color: #2D527C;
+    text-decoration: none;
+    transition: all 100ms ease-in-out;
+}
+
+.login-form a:hover, .login-form a:active {
+    color: #598ac2;
 }
