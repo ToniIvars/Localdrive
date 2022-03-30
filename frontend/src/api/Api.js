@@ -1,13 +1,15 @@
 import axios from 'axios'
 
 class Api {
-  constructor(apiToken) {
+  apiToken = undefined
+  
+  initiateClient(apiToken) {
     this.client = axios.create({
       baseURL: process.env.REACT_APP_API_URL,
       headers: {
         API_TOKEN: apiToken
       }
-    });
+    })
   }
 
   async listDir(path) {

@@ -1,7 +1,8 @@
 import {UploadButton, MkdirButton} from './HeaderButtons'
 import logo from '../logo.svg'
+import { MdLogout } from 'react-icons/md'
 
-const Header = ({ setForm }) => {
+const Header = ({ setForm, logout }) => {
   return (
     <header id="navbar">
       <div id="logo-container">
@@ -11,6 +12,7 @@ const Header = ({ setForm }) => {
       <div id='header-btn-container'>
         <MkdirButton setForm={setForm} />
         <UploadButton setForm={setForm} />
+        <MdLogout id='logout-btn' onClick={logout} />
       </div>
     </header>
   )

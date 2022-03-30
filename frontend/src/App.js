@@ -5,15 +5,36 @@ import Header from './components/Header'
 import CardContainer from './components/CardContainer'
 import { MkdirForm, UploadFileForm } from './components/Forms'
 import Notification from './components/Notification'
+import { useNavigate } from 'react-router-dom'
 
-const apiToken = process.env.REACT_APP_USER_TOKEN
-const api = new Api(apiToken)
+// Global declaration of api client
+var api = new Api()
 
 function App() {
   const [dirItems, setDirItems] =  useState([])
   const [actualPath, setActualPath] = useState('')
   const [form, setForm] = useState('')
   const [notification, setNotification] = useState({})
+  const [authenticated, setAuthenticated] = useState(localStorage.hasOwnProperty('token'))
+
+  const navigate = useNavigate()
+
+  // Initial logged-in checking
+  useEffect(() => {
+    if (!authenticated) {
+      navigate('/login')
+
+    } else {
+      !api.apiToken && api.initiateClient(localStorage.getItem('token'))
+    }
+
+  }, [authenticated])
+
+  // Log Out
+  const logout = () => {
+    localStorage.removeItem('token')
+    setAuthenticated(false)
+  }
 
   // List dir
   const listDir = () => {
@@ -90,7 +111,7 @@ function App() {
       {form === 'mkdir' && <MkdirForm makeDirectory={makeDirectory} setForm={setForm} />}
       {form === 'upload' && <UploadFileForm uploadFile={uploadFile} setForm={setForm} />}
 
-      <Header setForm={setForm} />
+      <Header setForm={setForm} logout={logout} />
 
       {Object.keys(notification).length !== 0 && <Notification message={notification.message} status={notification.status} setNotification={setNotification} />}
 
