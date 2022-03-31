@@ -369,6 +369,14 @@ select {
     margin-right: 0.4rem;
 }
 
+.dropdown-entrance {
+    animation: fadeIn 500ms;
+}
+
+.dropdown-exit {
+    animation: fadeOut 500ms;
+}
+
 .edit-form {
     margin-left: 0.5rem;
     display: flex;

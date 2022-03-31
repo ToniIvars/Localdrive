@@ -36,13 +36,22 @@ const Card = ({ item, setActualPath, downloadItem, editItem, deleteItem }) => {
   const [editing, setEditing] = useState(false)
   const [newName, setNewName] = useState(name)
   const [error, setError] = useState('')
+  const [animation, setAnimation] = useState('dropdown-entrance')
 
   const chagePath = () => {
     setActualPath(prev => `${prev}${name}/`)
   }
 
   const toggleDropdown = () => {
-    setDropdown(prev => !prev)
+    !dropdown ? setAnimation('dropdown-entrance') : setAnimation('dropdown-exit')
+
+    if (dropdown) {
+      setTimeout(() => {
+        setDropdown(prev => !prev)
+      }, 450)
+    } else {
+      setDropdown(prev => !prev)
+    }
   }
 
   const onSubmit = (e) => {
@@ -73,7 +82,7 @@ const Card = ({ item, setActualPath, downloadItem, editItem, deleteItem }) => {
       <div className='dropdown'>
         <HiDotsVertical className='card-icon-small dropdown-btn' onClick={toggleDropdown} />
         {dropdown && 
-          <div className='dropdown-content'>
+          <div className={`dropdown-content ${animation}`}>
             <button className='download-btn' onClick={() => {
               downloadItem(is_dir, name)
               setDropdown(false)
