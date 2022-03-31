@@ -66,7 +66,7 @@ const Card = ({ item, setActualPath, downloadItem, editItem, deleteItem }) => {
   }
 
   return (
-    <div className={`card ${is_dir ? 'dir-card' : ''}`} onDoubleClick={is_dir ? chagePath : null} >
+    <div className={`card ${is_dir && !editing ? 'dir-card' : ''}`} onDoubleClick={is_dir && !editing ? chagePath : null} >
       <div className={editing ? 'editing-card' : undefined}>
         {getIconFromMimeType(mime_type)}
         {editing ?
