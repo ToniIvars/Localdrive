@@ -50,14 +50,6 @@ label {
     margin-bottom: 0.5rem;
 }
 
-select {
-    padding-left: 0.5rem;
-    background-color: #DEE2E6;
-    border: none;
-    border-radius: 10px;
-    font-size: 1rem;
-}
-
 #navbar {
     display: flex;
     justify-content: space-between;
