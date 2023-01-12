@@ -2,7 +2,7 @@ from fastapi import FastAPI, Header, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, Response
 
-from api.utils import db, file_handling
+from api.utils import db, file_handling, decorators
 from .schemas import UserCreate, UserDelete, DeleteModel, ModifyModel
 from .config import settings
 
@@ -27,12 +27,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Extra functions
-
-def check_token(token: str):
-    if not db.valid_token(token):
-        raise HTTPException(status_code=401, detail='Invalid token')
-
 # API endpoints
 
 @app.get('/', tags=['Information'])
@@ -45,11 +39,11 @@ async def info():
 
 @app.post('/users/create', tags=['Users'])
 async def create_user(user: UserCreate):
-    new_user_token = db.create_user(**user.dict())
+    token = db.create_user(**user.dict())
 
     return {
         'detail': f'User {user.username} created successfully',
-        'token': new_user_token
+        'token': token
     }
 
 
@@ -62,9 +56,8 @@ async def get_my_token(user: UserCreate):
     }
 
 @app.delete('/users/delete', tags=['Users'])
+@decorators.check_token
 async def delete_user(user: UserDelete, token: str = Header(..., alias='API_TOKEN')):
-    check_token(token)
-
     db.delete_user(token, user.password)
     file_handling.delete_user_directory(token)
 
@@ -73,23 +66,21 @@ async def delete_user(user: UserDelete, token: str = Header(..., alias='API_TOKE
     }
 
 @app.get('/files/list', tags=['Files'])
+@decorators.check_token
 async def list_files(path: str = '', token: str = Header(..., alias='API_TOKEN')):
-    check_token(token)
-
     dir_content = file_handling.list_files_from_dir(token, path)
 
     return dir_content
 
 @app.get('/files/download/{name}', tags=['Files'])
+@decorators.check_token
 async def download(name:str, path: str = '', token: str = Header(..., alias='API_TOKEN')):
-    check_token(token)
-
     local_path = file_handling.get_storage_path(token, path, mkdir=False) / name
 
-    if not file_handling.path_exists(local_path):
+    if not local_path.exists():
         raise HTTPException(status_code=404, detail="File or directory not found")
 
-    if file_handling.path_is_dir(local_path):
+    if local_path.is_dir():
         zip_file = file_handling.get_zipped_dir(local_path)
 
         return Response(zip_file, media_type="application/zip", headers={
@@ -99,9 +90,8 @@ async def download(name:str, path: str = '', token: str = Header(..., alias='API
     return FileResponse(path=local_path)
 
 @app.post('/files/upload', tags=['Files'])
+@decorators.check_token
 async def upload_file(post_file: UploadFile, path: str = '', token: str = Header(..., alias='API_TOKEN')):
-    check_token(token)
-
     out_file_path = file_handling.get_storage_path(token, path) / post_file.filename
 
     await file_handling.save_file(post_file, out_file_path)
@@ -109,12 +99,11 @@ async def upload_file(post_file: UploadFile, path: str = '', token: str = Header
     return {'detail': 'File uploaded successfully'}
 
 @app.post('/files/mk-dir', tags=['Files'])
+@decorators.check_token
 async def make_directory(model: DeleteModel, token: str = Header(..., alias='API_TOKEN')):
-    check_token(token)
-
     path = file_handling.get_storage_path(token, model.path, mkdir=False) / model.name
 
-    if file_handling.path_exists(path):
+    if path.exists():
         raise HTTPException(status_code=400, detail="Directory already exists")
 
     file_handling.mkdir_if_not_exists(path)
@@ -122,17 +111,16 @@ async def make_directory(model: DeleteModel, token: str = Header(..., alias='API
     return {'detail': 'Directory created successfully'}
 
 @app.put('/files/change-name', tags=['Files'])
+@decorators.check_token
 async def change_name(model: ModifyModel, token: str = Header(..., alias='API_TOKEN')):
-    check_token(token)
-
     old_path = file_handling.get_storage_path(token, model.path, mkdir=False) / model.name
 
     new_path = file_handling.get_storage_path(token, model.path, mkdir=False) / model.new_name
 
-    if not file_handling.path_exists(old_path):
+    if not old_path.exists():
         raise HTTPException(status_code=404, detail="File or directory not found")
 
-    if file_handling.path_exists(new_path):
+    if new_path.exists():
         raise HTTPException(status_code=400, detail="File or directory already exists")
 
     file_handling.rename(old_path, new_path)
@@ -140,12 +128,11 @@ async def change_name(model: ModifyModel, token: str = Header(..., alias='API_TO
     return {'detail': 'Name changed successfully'}
 
 @app.delete('/files/delete', tags=['Files'])
+@decorators.check_token
 async def delete(model: DeleteModel, token: str = Header(..., alias='API_TOKEN')):
-    check_token(token)
-
     path_to_delete = file_handling.get_storage_path(token, model.path, mkdir=False) / model.name
 
-    if not file_handling.path_exists(path_to_delete):
+    if not path_to_delete.exists():
         raise HTTPException(status_code=404, detail="File or directory not found")
 
     file_handling.delete(path_to_delete)
