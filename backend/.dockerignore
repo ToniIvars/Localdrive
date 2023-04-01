@@ -1,0 +1,10 @@
+env/
+__pycache__/
+*.db
+*.sqlite
+*.sqlite3
+.env
+.pytest_cache/
+
+Dockerfile
+.dockerignore

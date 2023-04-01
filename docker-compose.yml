@@ -1,0 +1,22 @@
+services:
+  backend:
+    build: ./backend
+    container_name: localdrive-backend
+    ports:
+      - 8000:8000
+    environment:
+      - STORE_PATH=/app/storage
+      - ALLOWED_ORIGINS=*
+    volumes:
+      - backend-storage:/app/storage
+    
+  frontend:
+    build: ./frontend
+    container_name: localdrive-frontend
+    ports:
+      - 3000:3000
+    environment:
+      - REACT_APP_API_URL=http://127.0.0.1:8000
+
+volumes:
+  backend-storage:

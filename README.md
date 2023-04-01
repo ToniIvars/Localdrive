@@ -6,7 +6,18 @@ The frontend is a UI made with **React JS** and the backend is an API made in Py
 
 Clone the repo using `https://github.com/ToniIvars/Localdrive` and start having a Local Drive!
 
-## Setup
+## Docker setup
+
+The easiest way to setup this project is with Docker. Just run the following commands:
+
+```bash
+git clone https://github.com/ToniIvars/localdrive
+cd localdrive
+docker compose up -d
+```
+> You can change the ports in the _docker-compose.yml_ file
+
+## Manual Setup
 
 > It is highly recommended that you use a **virtual environment** to run the API. You can create one using `python3 -m venv env`.
 
@@ -19,14 +30,14 @@ You must export an environment variable called **ALLOWED_ORIGINS** as well. You 
 
 Then, talking about the UI, in the `frontend` directory you must create a _.env_ file and export a variable called `REACT_APP_API_URL`, setting it to the URL of the API.
 
-## Running the app
+### Running the app
 
 To start the backend, you must be in the **backend directory**.
 From here, you can run `uvicorn api.main:app`.
 
 To start the frontend, you must be in the **frontend directory**. From here, you can run `npm start`.
 
-## Testing the backend
+### Testing the backend
 
 In order tu run some basic test for the backend, navigate to its directory and run `python -m pytest api/testing/tests.py`. 
 
