@@ -1,11 +1,12 @@
 from fastapi import HTTPException
 from pony.orm import *
 
+from api.config import settings
 from . import hashing
 
 db = Database()
 
-db.bind(provider='sqlite', filename='database.db', create_db=True)
+db.bind(provider='sqlite', filename=f'{settings.store_path}/database.db', create_db=True)
 
 # Models
 
