@@ -4,9 +4,10 @@ WORKDIR /app
 
 COPY . .
 
-ARG REACT_APP_API_URL=http://127.0.0.1:8000
+ARG VITE_API_URL=http://127.0.0.1:8000
 
-RUN npm install && npm install -g serve
+RUN yarn && yarn global add serve
+RUN yarn build
 
 EXPOSE 3000
-CMD npm run build && serve build
+CMD serve build
