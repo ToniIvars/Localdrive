@@ -6,11 +6,11 @@ from api.main import app
 client = TestClient(app)
 
 HEADERS = {
-    'accept': 'application/json',
+    'Accept': 'application/json',
     'Content-Type': 'application/json'
 }
 
-FILE_HEADERS = {'accept': 'application/json'}
+FILE_HEADERS = {'Accept': 'application/json'}
 
 API_TOKEN = ''
 
@@ -35,13 +35,13 @@ def test_get_user_token():
         "username": "fake_user",
         "password": "fake_user_pass"
     }
-    response = client.post('/users/get-my-token', json=post_data, headers=HEADERS)
+    response = client.post('/users/token', json=post_data, headers=HEADERS)
 
     assert response.status_code == 200
     assert response.json()['token'] == API_TOKEN
 
-    HEADERS.update({'API_TOKEN': API_TOKEN})
-    FILE_HEADERS.update({'API_TOKEN': API_TOKEN})
+    HEADERS.update({'Authorization': f'Bearer {API_TOKEN}'})
+    FILE_HEADERS.update({'Authorization': f'Bearer {API_TOKEN}'})
 
 def test_upload_file():
     file_to_upload = {'post_file': open('api/testing/upload_test_file.txt' ,'rb')}
@@ -64,7 +64,7 @@ def test_mkdir():
         "name": "hello"
     }
 
-    response = client.post('/files/mk-dir', json=post_data, headers=HEADERS)
+    response = client.post('/files/mkdir', json=post_data, headers=HEADERS)
 
     assert response.status_code == 200
     assert response.json()['detail'] == "Directory created successfully"
