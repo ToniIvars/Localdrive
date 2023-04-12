@@ -1,4 +1,3 @@
-from fastapi import HTTPException
 from pony.orm import *
 
 from api.config import settings
@@ -6,7 +5,7 @@ from . import hashing
 
 db = Database()
 
-db.bind(provider='sqlite', filename=f'{settings.store_path}/database.db', create_db=True)
+db.bind(provider='sqlite', filename=f'{settings.store_path}/localdrive.db', create_db=True)
 
 # Models
 
@@ -30,10 +29,10 @@ def create_user(username: str, password: str) -> str:
         User(username=username, hashed_password=hashed_password, token=token)
         commit()
 
-        return token
+        return {'error': False, 'token': token}
 
     except TransactionIntegrityError:
-        raise HTTPException(status_code=400, detail=f'User alredy exists')
+        return {'error': True, 'detail': 'User alredy exists'}
 
 @db_session
 def delete_user(token: str, password: str) -> str:
@@ -41,22 +40,22 @@ def delete_user(token: str, password: str) -> str:
 
     if hashing.check_password(user, password):
         user.delete()
+        return {'error': False}
 
-    else:
-        raise HTTPException(status_code=401, detail=f'Wrong password')
+    return {'error': True, 'detail': 'Incorrect password'}
 
 @db_session
 def get_user_token(username: str, password: str) -> str:
     user = User.get(username=username)
 
     if not user:
-        raise HTTPException(status_code=404, detail=f'User not found')
+        return {'error': True, 'detail': 'Incorrect user or password'}
+
 
     if hashing.check_password(user, password):
-        return user.token
+        return {'error': False, 'token': user.token}
 
-    else:
-        raise HTTPException(status_code=401, detail=f'Wrong password')
+    return {'error': True, 'detail': 'Incorrect user or password'}
 
 @db_session
 def valid_token(token: str) -> bool:
