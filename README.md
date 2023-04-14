@@ -2,9 +2,9 @@
 
 This repository is a home cloud, that means you can have your own _Google Drive_ at home!
 
-The frontend is a UI made with **[Svelte](https://svelte.dev/)** and the backend is an API made in Python using the **[FastAPI](https://fastapi.tiangolo.com/)** framework.
+The frontend is a UI made with **[React](https://react.dev/)** and the backend is an API made in Python using the **[FastAPI](https://fastapi.tiangolo.com/)** framework.
 
-Clone the repo using `https://github.com/ToniIvars/Localdrive` and start having a Local Drive!
+Clone the repo using `https://github.com/ToniIvars/localdrive` and start having a Local Drive!
 
 ## Setup
 
